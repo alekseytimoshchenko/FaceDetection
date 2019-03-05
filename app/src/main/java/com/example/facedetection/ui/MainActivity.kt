@@ -2,22 +2,24 @@ package com.example.facedetection.ui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.facedetection.R
 import com.example.facedetection.ui.adapters.SectionsPagerAdapter
+import com.example.facedetection.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         container.adapter = SectionsPagerAdapter(supportFragmentManager)
+        val list = listOf(PlaceholderFragment.newInstance(1), PlaceholderFragment.newInstance(2))
+        (container.adapter as? SectionsPagerAdapter)?.setContent(list)
     }
 
     /**
