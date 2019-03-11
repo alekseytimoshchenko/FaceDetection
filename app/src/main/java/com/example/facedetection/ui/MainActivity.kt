@@ -1,63 +1,27 @@
 package com.example.facedetection.ui
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.example.facedetection.R
 import com.example.facedetection.ui.adapters.SectionsPagerAdapter
 import com.example.facedetection.ui.base.BaseActivity
+import com.example.facedetection.ui.faceDetectedPhotoScreen.FaceDetectedPhotoScreen
+import com.example.facedetection.ui.generalPhotosScreen.GeneralPhotosScreen
+import com.example.facedetection.ui.notDefinedPhotoScreen.NotDefinedPhotoScreen
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_main.view.*
 
 class MainActivity : BaseActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         container.adapter = SectionsPagerAdapter(supportFragmentManager)
-        val list = listOf(PlaceholderFragment.newInstance(1), PlaceholderFragment.newInstance(2))
+
+        val list = listOf(//
+            GeneralPhotosScreen.newInstance(), //
+            FaceDetectedPhotoScreen.newInstance(), //
+            NotDefinedPhotoScreen.newInstance()//
+        )
+
         (container.adapter as? SectionsPagerAdapter)?.setContent(list)
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    class PlaceholderFragment : Fragment() {
-
-        override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View? {
-            val rootView = inflater.inflate(R.layout.fragment_main, container, false)
-            rootView.section_label.text = getString(
-                R.string.section_format, arguments?.getInt(
-                    ARG_SECTION_NUMBER
-                )
-            )
-            return rootView
-        }
-
-        companion object {
-            /**
-             * The fragment argument representing the section number for this
-             * fragment.
-             */
-            private val ARG_SECTION_NUMBER = "section_number"
-
-            /**
-             * Returns a new instance of this fragment for the given section
-             * number.
-             */
-            fun newInstance(sectionNumber: Int): PlaceholderFragment {
-                val fragment = PlaceholderFragment()
-                val args = Bundle()
-                args.putInt(ARG_SECTION_NUMBER, sectionNumber)
-                fragment.arguments = args
-                return fragment
-            }
-        }
     }
 }
