@@ -35,6 +35,11 @@ dependencies {
     implementation "com.android.support:design:${libs.supportVersion}"
     implementation "com.android.support.constraint:constraint-layout:${libs.constraintLayoutVersion}"
 
+    //Koin
+    implementation "org.koin:koin-android:${libs.koin}"
+    implementation "org.koin:koin-android-scope:${libs.koin}"
+    implementation "org.koin:koin-android-viewmodel:${libs.koin}"
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

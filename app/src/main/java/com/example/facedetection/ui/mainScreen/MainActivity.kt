@@ -1,4 +1,4 @@
-package com.example.facedetection.ui
+package com.example.facedetection.ui.mainScreen
 
 import android.os.Bundle
 import com.example.facedetection.R
