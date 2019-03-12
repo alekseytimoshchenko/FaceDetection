@@ -20,4 +20,6 @@ class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         list = iList
         notifyDataSetChanged()
     }
+
+    override fun getPageTitle(position: Int): CharSequence? = list[position].getTitle()
 }
