@@ -14,7 +14,11 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        container.adapter = SectionsPagerAdapter(supportFragmentManager)
+        setGui()
+    }
+
+    private fun setGui() {
+        vp_main_act.adapter = SectionsPagerAdapter(supportFragmentManager)
 
         val list = listOf(//
             GeneralPhotosScreen.newInstance(), //
@@ -22,6 +26,8 @@ class MainActivity : BaseActivity() {
             NotDefinedPhotoScreen.newInstance()//
         )
 
-        (container.adapter as? SectionsPagerAdapter)?.setContent(list)
+        (vp_main_act.adapter as? SectionsPagerAdapter)?.setContent(list)
+
+        tl_main_act.setupWithViewPager(vp_main_act)
     }
 }

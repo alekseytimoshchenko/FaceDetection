@@ -8,6 +8,7 @@ import com.example.facedetection.R
 import com.example.facedetection.ui.base.BaseFragment
 
 class NotDefinedPhotoScreen : BaseFragment() {
+    override fun getTitle(): String = "No Face"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

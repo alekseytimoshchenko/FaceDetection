@@ -8,6 +8,8 @@ import com.example.facedetection.R
 import com.example.facedetection.ui.base.BaseFragment
 
 class GeneralPhotosScreen : BaseFragment() {
+    override fun getTitle(): String = "All"
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
