@@ -18,4 +18,6 @@ class FaceDetectedPhotoScreen : BaseFragment() {
     companion object {
         fun newInstance(): FaceDetectedPhotoScreen = FaceDetectedPhotoScreen()
     }
+
+
 }

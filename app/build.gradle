@@ -38,8 +38,8 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:${libs.constraintLayoutVersion}"
 
     //Koin - DI
-    implementation "org.koin:koin-android:${libs.koin}"
-    implementation "org.koin:koin-android-scope:${libs.koin}"
+//    implementation "org.koin:koin-android:${libs.koin}"
+//    implementation "org.koin:koin-android-scope:${libs.koin}"
     implementation "org.koin:koin-android-viewmodel:${libs.koin}"
 
     // Rx
