@@ -30,16 +30,31 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    //android
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.android.support:appcompat-v7:${libs.supportVersion}"
     implementation "com.android.support:design:${libs.supportVersion}"
     implementation "com.android.support.constraint:constraint-layout:${libs.constraintLayoutVersion}"
 
-    //Koin
+    //Koin - DI
     implementation "org.koin:koin-android:${libs.koin}"
     implementation "org.koin:koin-android-scope:${libs.koin}"
     implementation "org.koin:koin-android-viewmodel:${libs.koin}"
 
+    // Rx
+    implementation "io.reactivex.rxjava2:rxkotlin:${libs.rxkotlin}"
+
+    //Log
+    implementation "com.jakewharton.timber:timber:${libs.timber}"
+    implementation "com.facebook.stetho:stetho:${libs.stetho}"
+    implementation "com.facebook.stetho:stetho-okhttp3:${libs.stetho}"
+
+    //Memory profiling
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:${libs.leakcanary}"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${libs.leakcanary}"
+
+    //Test
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
