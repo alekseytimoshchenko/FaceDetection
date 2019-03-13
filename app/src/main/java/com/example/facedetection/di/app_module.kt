@@ -9,29 +9,32 @@ import com.example.facedetection.data.repo.main_act.IMainRepo
 import com.example.facedetection.data.repo.main_act.MainRepo
 import com.example.facedetection.data.repo.not_defined_photo_screen.INotDefinedRepo
 import com.example.facedetection.data.repo.not_defined_photo_screen.NotDefinedRepo
+import com.example.facedetection.ui.base.SharedViewModel
 import com.example.facedetection.ui.faceDetectedPhotoScreen.FaceDetectedViewModel
 import com.example.facedetection.ui.generalPhotosScreen.GeneralPhotoScreenViewModel
 import com.example.facedetection.ui.mainScreen.MainActViewModel
 import com.example.facedetection.ui.notDefinedPhotoScreen.NotDefinedPhotoScreenViewModel
 import io.reactivex.schedulers.Schedulers
+import org.koin.android.viewmodel.experimental.builder.viewModel
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
+import org.koin.experimental.builder.factory
 
 val mainModule = module {
-    factory { FragmentFactory() }
+    factory<FragmentFactory>()
 
     single { Schedulers.io() }
 
     single<IMainRepo> { MainRepo(get()) }
 
-    viewModel { MainActViewModel(get(), get()) }
+    viewModel<MainActViewModel>()
 }
 
 val generalScreenModule = module {
 
     single<IGeneralRepo> { GeneralRepo() }
 
-    viewModel { GeneralPhotoScreenViewModel(get()) }
+    viewModel<GeneralPhotoScreenViewModel>()
 }
 
 val notDefinedScreenModule = module {
@@ -43,5 +46,9 @@ val notDefinedScreenModule = module {
 val faceDetectedModule = module {
     single<IFaceDetectedRepo> { FaceDetectedRepo() }
 
-    viewModel { FaceDetectedViewModel(get()) }
+    viewModel<FaceDetectedViewModel>()
+}
+
+val sharedModule = module {
+    viewModel<SharedViewModel>()
 }
