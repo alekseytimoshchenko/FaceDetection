@@ -1,6 +1,7 @@
 package com.example.facedetection
 
 import android.app.Application
+import com.example.facedetection.di.faceDetectedModule
 import com.example.facedetection.di.generalScreenModule
 import com.example.facedetection.di.mainModule
 import com.example.facedetection.di.notDefinedScreenModule
@@ -23,7 +24,8 @@ class App : Application() {
             listOf(
                 mainModule,
                 generalScreenModule,
-                notDefinedScreenModule
+                notDefinedScreenModule,
+                faceDetectedModule
             )
         )
 

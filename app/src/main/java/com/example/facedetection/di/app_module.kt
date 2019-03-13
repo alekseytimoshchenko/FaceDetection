@@ -1,5 +1,7 @@
 package com.example.facedetection.di
 
+import com.example.facedetection.data.repo.face_detected_photo_screen.FaceDetectedRepo
+import com.example.facedetection.data.repo.face_detected_photo_screen.IFaceDetectedRepo
 import com.example.facedetection.data.repo.general_photo_screen.GeneralRepo
 import com.example.facedetection.data.repo.general_photo_screen.IGeneralRepo
 import com.example.facedetection.data.repo.main_act.FragmentFactory
@@ -7,6 +9,7 @@ import com.example.facedetection.data.repo.main_act.IMainRepo
 import com.example.facedetection.data.repo.main_act.MainRepo
 import com.example.facedetection.data.repo.not_defined_photo_screen.INotDefinedRepo
 import com.example.facedetection.data.repo.not_defined_photo_screen.NotDefinedRepo
+import com.example.facedetection.ui.faceDetectedPhotoScreen.FaceDetectedViewModel
 import com.example.facedetection.ui.generalPhotosScreen.GeneralPhotoScreenViewModel
 import com.example.facedetection.ui.mainScreen.MainActViewModel
 import com.example.facedetection.ui.notDefinedPhotoScreen.NotDefinedPhotoScreenViewModel
@@ -35,4 +38,10 @@ val notDefinedScreenModule = module {
     single<INotDefinedRepo> { NotDefinedRepo() }
 
     viewModel { NotDefinedPhotoScreenViewModel(get()) }
+}
+
+val faceDetectedModule = module {
+    single<IFaceDetectedRepo> { FaceDetectedRepo() }
+
+    viewModel { FaceDetectedViewModel(get()) }
 }
