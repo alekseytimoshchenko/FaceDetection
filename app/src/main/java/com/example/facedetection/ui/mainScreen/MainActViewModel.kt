@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.example.facedetection.data.repo.main_act.IMainRepo
-import com.example.facedetection.ui.base.BaseFragment
+import com.example.facedetection.ui.base.IBaseFragment
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
@@ -18,7 +18,7 @@ class MainActViewModel(
 ) : ViewModel() {
     private val disposable: CompositeDisposable = CompositeDisposable()
 
-    private val content: MutableLiveData<List<BaseFragment>> = MutableLiveData()
+    private val content: MutableLiveData<List<IBaseFragment>> = MutableLiveData()
 
     fun requestContent() {
         disposable.add(
@@ -31,9 +31,9 @@ class MainActViewModel(
         )
     }
 
-     fun contentLD(): LiveData<List<BaseFragment>> = content
+     fun contentLD(): LiveData<List<IBaseFragment>> = content
 
-    private fun postContent(content: List<BaseFragment>) {
+    private fun postContent(content: List<IBaseFragment>) {
         this.content.postValue(content)
     }
 

@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.example.facedetection.R
 import com.example.facedetection.ui.adapters.SectionsPagerAdapter
 import com.example.facedetection.ui.base.BaseActivity
-import com.example.facedetection.ui.base.BaseFragment
+import com.example.facedetection.ui.base.IBaseFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -25,7 +25,7 @@ class MainActivity : BaseActivity() {
         model.contentLD().observe(this, Observer { setContent(it) })
     }
 
-    private fun setContent(it: List<BaseFragment>?) {
+    private fun setContent(it: List<IBaseFragment>?) {
         (vp_main_act.adapter as SectionsPagerAdapter).setContent(it!!)
     }
 
