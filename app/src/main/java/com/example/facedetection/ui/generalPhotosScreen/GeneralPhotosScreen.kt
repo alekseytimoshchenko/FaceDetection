@@ -6,8 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.facedetection.R
 import com.example.facedetection.ui.base.BaseFragment
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class GeneralPhotosScreen : BaseFragment() {
+
+    private val model: GeneralPhotoScreenViewModel by viewModel()
+
     override fun getTitle(): String = "All"
 
     override fun onCreateView(
@@ -15,6 +19,15 @@ class GeneralPhotosScreen : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.frag_general_photos_layout, container, false)
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        observeLiveData()
+        lifecycle.addObserver(model)
+    }
+
+    private fun observeLiveData() {
+
+    }
 
     companion object {
         fun newInstance(): GeneralPhotosScreen = GeneralPhotosScreen()

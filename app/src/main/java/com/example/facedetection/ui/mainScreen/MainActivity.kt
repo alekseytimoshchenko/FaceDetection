@@ -17,8 +17,8 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setGui()
-        model.requestContent()
         observeLiveData()
+        lifecycle.addObserver(model)
     }
 
     private fun observeLiveData() {

@@ -9,8 +9,8 @@ import io.reactivex.Single
 class MainRepo(private val fragFactory: FragmentFactory) : IMainRepo {
     override fun getContent(): Single<List<IBaseFragment>> = Single.just(
         listOf(
-            fragFactory.create(FragmentFactory.Types.FaceDetectedScreen),
             fragFactory.create(FragmentFactory.Types.GeneralScreen),
+            fragFactory.create(FragmentFactory.Types.FaceDetectedScreen),
             fragFactory.create(FragmentFactory.Types.NotDefinedScreen)
         )
     )
@@ -23,8 +23,8 @@ class FragmentFactory {
 
     fun create(type: Types): IBaseFragment {
         return when (type) {
-            Types.FaceDetectedScreen -> FaceDetectedPhotoScreen.newInstance()
             Types.GeneralScreen -> GeneralPhotosScreen.newInstance()
+            Types.FaceDetectedScreen -> FaceDetectedPhotoScreen.newInstance()
             Types.NotDefinedScreen -> NotDefinedPhotoScreen.newInstance()
         }
     }
