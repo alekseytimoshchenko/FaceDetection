@@ -22,7 +22,8 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            shrinkResources true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -44,6 +45,7 @@ dependencies {
 
     // Rx
     implementation "io.reactivex.rxjava2:rxkotlin:${libs.rxkotlin}"
+    implementation "io.reactivex.rxjava2:rxandroid:${libs.rx2Android}"
 
     //Log
     implementation "com.jakewharton.timber:timber:${libs.timber}"

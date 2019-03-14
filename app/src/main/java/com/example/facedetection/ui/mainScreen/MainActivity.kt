@@ -2,10 +2,12 @@ package com.example.facedetection.ui.mainScreen
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
+import android.view.View
 import com.example.facedetection.R
 import com.example.facedetection.ui.adapters.SectionsPagerAdapter
 import com.example.facedetection.ui.base.BaseActivity
 import com.example.facedetection.ui.base.IBaseFragment
+import com.example.facedetection.ui.base.LoadingState
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -23,6 +25,26 @@ class MainActivity : BaseActivity() {
 
     private fun observeLiveData() {
         model.contentLD().observe(this, Observer { setContent(it) })
+        model.getProgressState().observe(this, Observer { it?.let { setProgress(it) } })
+        sharedViewModel.getProgressState().observe(this, Observer { it?.let { showProgress(it) } })
+    }
+
+    private fun showProgress(state: LoadingState) {
+        when (state) {
+            LoadingState.LOADING -> {
+                setLoadingVisibility(true)
+            }
+            LoadingState.SUCCESS -> {
+                setLoadingVisibility(false)
+            }
+            LoadingState.ERROR -> {
+                setLoadingVisibility(false)
+            }
+        }
+    }
+
+    private fun setLoadingVisibility(state: Boolean) {
+        pb_main_act.visibility = if (state) View.VISIBLE else View.GONE
     }
 
     private fun setContent(it: List<IBaseFragment>?) {

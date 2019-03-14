@@ -1,4 +1,3 @@
 package com.example.facedetection.ui.base
 
-interface IBaseViewModel : IViewModelProgress {
-}
+interface IBaseViewModel : IProgress

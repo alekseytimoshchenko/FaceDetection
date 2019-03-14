@@ -10,11 +10,11 @@ interface IBaseFragment {
 }
 
 abstract class BaseFragment : Fragment(), IBaseFragment {
-    private val viewModel by sharedViewModel<SharedViewModel>()
+    private val sharedViewModel by sharedViewModel<SharedViewModel>()
 
     abstract override fun getTitle(): String
 
     override fun setProgress(state: LoadingState) {
-        viewModel.setProgress(state)
+        sharedViewModel.setProgressState(state)
     }
 }

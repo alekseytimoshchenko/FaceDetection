@@ -8,9 +8,9 @@ interface IBaseActivity {
 }
 
 abstract class BaseActivity : AppCompatActivity(), IBaseActivity {
-    val viewModel by viewModel<SharedViewModel>()
+    val sharedViewModel by viewModel<SharedViewModel>()
 
     override fun setProgress(state: LoadingState) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        sharedViewModel.setProgressState(state)
     }
 }
