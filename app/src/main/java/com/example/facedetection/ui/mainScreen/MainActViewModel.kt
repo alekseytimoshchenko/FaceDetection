@@ -3,6 +3,7 @@ package com.example.facedetection.ui.mainScreen
 import android.arch.lifecycle.*
 import com.example.facedetection.data.repo.main_act.IMainRepo
 import com.example.facedetection.ui.base.IBaseFragment
+import com.example.facedetection.ui.base.IBaseViewModel
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
@@ -14,7 +15,7 @@ import timber.log.Timber
 class MainActViewModel(
     private val repo: IMainRepo,
     private val WORKER_SCHEDULER: Scheduler
-) : ViewModel(), LifecycleObserver {
+) : ViewModel(), IBaseViewModel, LifecycleObserver {
     private val disposable: CompositeDisposable = CompositeDisposable()
 
     private val content: MutableLiveData<List<IBaseFragment>> = MutableLiveData()
