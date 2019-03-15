@@ -47,6 +47,7 @@ ext {
             rxkotlin : "2.3.0",
             timber : "4.7.1",
             stetho: "1.5.0",
-            leakcanary: "1.6.3"
+            leakcanary: "1.6.3",
+            glide: "4.9.0"
     ]
 }

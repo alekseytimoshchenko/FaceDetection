@@ -38,8 +38,6 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:${libs.constraintLayoutVersion}"
 
     //Koin - DI
-//    implementation "org.koin:koin-android:${libs.koin}"
-//    implementation "org.koin:koin-android-scope:${libs.koin}"
     implementation "org.koin:koin-android-viewmodel:${libs.koin}"
 
     // Rx
@@ -53,6 +51,10 @@ dependencies {
     //Memory profiling
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${libs.leakcanary}"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${libs.leakcanary}"
+
+    //Glide
+    implementation "com.github.bumptech.glide:glide:${libs.glide}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${libs.glide}"
 
     //Test
     testImplementation 'junit:junit:4.12'
