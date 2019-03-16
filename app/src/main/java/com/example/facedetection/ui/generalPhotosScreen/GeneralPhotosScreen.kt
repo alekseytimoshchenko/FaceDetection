@@ -78,12 +78,12 @@ class GeneralPhotosScreen : BaseFragment() {
         model.contentContainerVisibility()
             .observe(viewLifecycleOwner, Observer { it?.let { setContentContainerVisibility(it) } })
 
-        model.checkPermission()
-            .observe(viewLifecycleOwner, Observer { it?.let { checkPermission() } })
-
         model.getProgressState().observe(this, Observer { it?.let { setProgress(it) } })
 
         model.screenContent().observe(this, Observer { it?.let { setScreenContent(it) } })
+
+        model.checkPermission()
+            .observe(viewLifecycleOwner, Observer { it?.let { checkPermission() } })
 
         model.showToast().observe(this, Observer { it?.let { showToast(it) } })
     }

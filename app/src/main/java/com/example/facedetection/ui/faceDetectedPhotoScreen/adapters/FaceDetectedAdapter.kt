@@ -1,4 +1,4 @@
-package com.example.facedetection.ui.generalPhotosScreen.adapters
+package com.example.facedetection.ui.faceDetectedPhotoScreen.adapters
 
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
@@ -14,7 +14,7 @@ import com.example.facedetection.ui.base.BaseHolder
 import com.example.facedetection.ui.base.IAdapter
 import com.example.facedetection.utils.diff.MyDiff
 
-class GeneralPhotoAdapter : IAdapter<List<IImageObj>>, RecyclerView.Adapter<GeneralPhotoAdapter.ViewHolder>() {
+class FaceDetectedAdapter : IAdapter<List<IImageObj>>, RecyclerView.Adapter<FaceDetectedAdapter.ViewHolder>() {
 
     private var content = mutableListOf<IImageObj>()
 
@@ -25,10 +25,10 @@ class GeneralPhotoAdapter : IAdapter<List<IImageObj>>, RecyclerView.Adapter<Gene
         result.dispatchUpdatesTo(this)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder =
-        ViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, position: Int): FaceDetectedAdapter.ViewHolder =
+        FaceDetectedAdapter.ViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_general_photo_layout, parent, false)
+                .inflate(R.layout.item_face_detected_layout, parent, false)
         )
 
     override fun getItemCount(): Int = content.size
@@ -39,7 +39,7 @@ class GeneralPhotoAdapter : IAdapter<List<IImageObj>>, RecyclerView.Adapter<Gene
 
     class ViewHolder(private val view: View) : BaseHolder<IImageObj>(view) {
         override fun onBind(item: IImageObj) {
-            val imageView = view.findViewById<ImageView>(R.id.iv_general_photo)
+            val imageView = view.findViewById<ImageView>(R.id.iv_face_detected)
 
             Glide.with(view)
                 .load(item.getImagePath())

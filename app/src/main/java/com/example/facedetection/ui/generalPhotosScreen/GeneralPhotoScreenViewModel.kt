@@ -15,18 +15,19 @@ import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
 class GeneralPhotoScreenViewModel(
-    private val app: Application,
+    app: Application,
     private val repo: IGeneralRepo,
     private val WORKER_SCHEDULER: Scheduler,
     private val imageFactory: IImageFactory
 ) : AndroidViewModel(app), IBaseViewModel, LifecycleObserver {
 
+    private val screenContent = MutableLiveData<List<IImageObj>>()
     private val noResultContentVisibility = MutableLiveData<Boolean>()
     private val contentContainerVisibility = MutableLiveData<Boolean>()
+
     private val checkPermission = LiveEvent<Boolean>()
     private val progress = LiveEvent<LoadingState>()
     private val showToast = LiveEvent<String>()
-    private val screenContent = MutableLiveData<List<IImageObj>>()
 
     override fun setProgressState(state: LoadingState) {
         progress.postValue(state)
@@ -106,11 +107,11 @@ class GeneralPhotoScreenViewModel(
 
     fun noResultContainerVisibility(): LiveData<Boolean> = noResultContentVisibility
 
-    fun contentContainerVisibility(): LiveData<Boolean> = contentContainerVisibility
-
     private fun setNoResultContainerVisibility(state: Boolean) {
         noResultContentVisibility.postValue(state)
     }
+
+    fun contentContainerVisibility(): LiveData<Boolean> = contentContainerVisibility
 
     private fun setContentContainerVisibility(state: Boolean) {
         contentContainerVisibility.postValue(state)
