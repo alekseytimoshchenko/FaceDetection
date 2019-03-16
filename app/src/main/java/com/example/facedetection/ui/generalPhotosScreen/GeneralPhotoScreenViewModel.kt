@@ -3,8 +3,11 @@ package com.example.facedetection.ui.generalPhotosScreen
 import android.arch.lifecycle.*
 import com.example.facedetection.data.repo.general_photo_screen.IGeneralRepo
 import com.example.facedetection.ui.base.IBaseViewModel
+import com.example.facedetection.utils.Constants
 import com.example.facedetection.utils.LiveEvent
 import io.reactivex.disposables.CompositeDisposable
+import timber.log.Timber
+import java.io.File
 
 class GeneralPhotoScreenViewModel(
     private val repo: IGeneralRepo
@@ -23,6 +26,9 @@ class GeneralPhotoScreenViewModel(
     }
 
     fun requestContent() {
+//        disposable.add(
+//            repo.allPhotos()
+//        )
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
@@ -48,4 +54,21 @@ class GeneralPhotoScreenViewModel(
     }
 
     fun checkPermission(): LiveData<Boolean> = checkPermission
+
+    private fun testDeleteIt() {
+        val photoList = mutableListOf<String>()
+
+        val files = File(Constants.CAMERA_FOLDER_PATH).listFiles()
+
+        for (tmp in files) {
+            if (tmp.name.contains(".jpg") || tmp.name.contains(".png")) {
+                photoList.add(tmp.absolutePath)
+            }
+        }
+
+        Timber.e("HERE")
+
+//        Glide.with(this).load("http://goo.gl/gEgYUd").into(imageView)
+//        Glide.with(this).load(photoList[0]).into(iv_test_delete_it)
+    }
 }
