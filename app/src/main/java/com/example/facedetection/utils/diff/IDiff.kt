@@ -6,7 +6,7 @@ package com.example.facedetection.utils.diff
  * If you use {@link android.support.v7.util.DiffUtil} so just override this interface in object that you need
  */
 interface IDiff<TYPE> {
-    fun areItemsTheSame(t: TYPE): Boolean
+    fun areItemsTheSame(obj: TYPE): Boolean
 
-    fun areContentsTheSame(t: TYPE): Boolean
+    fun areContentsTheSame(obj: TYPE): Boolean
 }

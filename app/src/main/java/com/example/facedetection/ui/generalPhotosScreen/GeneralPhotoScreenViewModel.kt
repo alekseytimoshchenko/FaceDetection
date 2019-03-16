@@ -2,7 +2,7 @@ package com.example.facedetection.ui.generalPhotosScreen
 
 import android.arch.lifecycle.*
 import com.example.facedetection.data.local.model.IImageFactory
-import com.example.facedetection.data.local.model.ImageObj
+import com.example.facedetection.data.local.model.IImageObj
 import com.example.facedetection.data.repo.general_photo_screen.IGeneralRepo
 import com.example.facedetection.ui.base.IBaseViewModel
 import com.example.facedetection.ui.base.LoadingState
@@ -21,7 +21,7 @@ class GeneralPhotoScreenViewModel(
     private val contentContainerVisibility = MutableLiveData<Boolean>()
     private val checkPermission = LiveEvent<Boolean>()
     private val progress = LiveEvent<LoadingState>()
-    private val screenContent = MutableLiveData<List<ImageObj>>()
+    private val screenContent = MutableLiveData<List<IImageObj>>()
 
     override fun setProgressState(state: LoadingState) {
         progress.postValue(state)
@@ -69,11 +69,11 @@ class GeneralPhotoScreenViewModel(
         )
     }
 
-    private fun setContent(content: List<ImageObj>) {
+    private fun setContent(content: List<IImageObj>) {
         screenContent.postValue(content)
     }
 
-    fun screenContent(): LiveData<List<ImageObj>> = screenContent
+    fun screenContent(): LiveData<List<IImageObj>> = screenContent
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
@@ -108,7 +108,4 @@ class GeneralPhotoScreenViewModel(
     }
 
     fun checkPermission(): LiveData<Boolean> = checkPermission
-
-    //        Glide.with(this).load("http://goo.gl/gEgYUd").into(imageView)
-
 }

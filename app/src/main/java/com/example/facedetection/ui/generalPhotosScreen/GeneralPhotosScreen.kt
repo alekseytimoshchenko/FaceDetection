@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.facedetection.R
-import com.example.facedetection.data.local.model.ImageObj
+import com.example.facedetection.data.local.model.IImageObj
 import com.example.facedetection.ui.base.BaseFragment
 import com.example.facedetection.ui.base.IAdapter
 import com.example.facedetection.ui.generalPhotosScreen.adapters.GeneralPhotoAdapter
@@ -85,8 +85,8 @@ class GeneralPhotosScreen : BaseFragment() {
         model.screenContent().observe(this, Observer { it?.let { setScreenContent(it) } })
     }
 
-    private fun setScreenContent(content: List<ImageObj>) {
-        (rv_general_screen_all_photos as IAdapter<List<ImageObj>>).setContent(content)
+    private fun setScreenContent(content: List<IImageObj>) {
+        (rv_general_screen_all_photos.adapter as? IAdapter<List<IImageObj>>)?.setContent(content)
     }
 
     private fun checkPermission() {
