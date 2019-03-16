@@ -1,6 +1,9 @@
 package com.example.facedetection.ui.generalPhotosScreen
 
+import android.app.Application
 import android.arch.lifecycle.*
+import com.example.facedetection.App
+import com.example.facedetection.R
 import com.example.facedetection.data.local.model.IImageFactory
 import com.example.facedetection.data.local.model.IImageObj
 import com.example.facedetection.data.repo.general_photo_screen.IGeneralRepo
@@ -12,16 +15,17 @@ import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
 class GeneralPhotoScreenViewModel(
+    private val app: Application,
     private val repo: IGeneralRepo,
     private val WORKER_SCHEDULER: Scheduler,
     private val imageFactory: IImageFactory
-) : ViewModel(), IBaseViewModel, LifecycleObserver {
+) : AndroidViewModel(app), IBaseViewModel, LifecycleObserver {
 
     private val noResultContentVisibility = MutableLiveData<Boolean>()
     private val contentContainerVisibility = MutableLiveData<Boolean>()
     private val checkPermission = LiveEvent<Boolean>()
     private val progress = LiveEvent<LoadingState>()
-    private val showEmptyFolderToast = LiveEvent<Boolean>()
+    private val showToast = LiveEvent<String>()
     private val screenContent = MutableLiveData<List<IImageObj>>()
 
     override fun setProgressState(state: LoadingState) {
@@ -59,11 +63,12 @@ class GeneralPhotoScreenViewModel(
                         if (it.isEmpty()) {
                             setContentContainerVisibility(false)
                             setNoResultContainerVisibility(true)
-                            doShowEmptyFolderToast()
+                            doShowToast(getApplication<App>().getString(R.string.empty_folder))
                         } else {
                             setNoResultContainerVisibility(false)
                             setContentContainerVisibility(true)
                             setContent(it)
+                            doShowToast(String.format("%s %s", getApplication<App>().getString(R.string.photo_num), it.size))
                         }
                     },
                     { Timber.e(it) }
@@ -71,10 +76,10 @@ class GeneralPhotoScreenViewModel(
         )
     }
 
-    fun showEmptyFolderToast() = showEmptyFolderToast
+    fun showToast() = showToast
 
-    private fun doShowEmptyFolderToast() {
-        showEmptyFolderToast.postValue(true)
+    private fun doShowToast(message: String) {
+        showToast.postValue(message)
     }
 
     private fun setContent(content: List<IImageObj>) {

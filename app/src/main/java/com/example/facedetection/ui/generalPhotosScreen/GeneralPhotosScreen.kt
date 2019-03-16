@@ -85,7 +85,7 @@ class GeneralPhotosScreen : BaseFragment() {
 
         model.screenContent().observe(this, Observer { it?.let { setScreenContent(it) } })
 
-        model.showEmptyFolderToast().observe(this, Observer { it?.let { showEmptyFolderToast() } })
+        model.showToast().observe(this, Observer { it?.let { showToast(it) } })
     }
 
     private fun setScreenContent(content: List<IImageObj>) {
@@ -107,8 +107,8 @@ class GeneralPhotosScreen : BaseFragment() {
         }
     }
 
-    private fun showEmptyFolderToast() {
-        Toast.makeText(context?.applicationContext, getString(R.string.empty_folder), Toast.LENGTH_LONG).show()
+    private fun showToast(message: String) {
+        Toast.makeText(context?.applicationContext, message, Toast.LENGTH_LONG).show()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

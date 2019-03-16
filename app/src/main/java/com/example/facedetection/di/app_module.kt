@@ -1,5 +1,6 @@
 package com.example.facedetection.di
 
+import com.example.facedetection.App
 import com.example.facedetection.data.local.model.IImageFactory
 import com.example.facedetection.data.local.model.ImageFactory
 import com.example.facedetection.data.repo.face_detected_photo_screen.FaceDetectedRepo
@@ -35,6 +36,8 @@ val mainModule = module {
 val generalScreenModule = module {
 
     factory<IImageFactory> { ImageFactory() }
+
+    factory { App.instance }
 
     single<IGeneralRepo> { GeneralRepo() }
 
