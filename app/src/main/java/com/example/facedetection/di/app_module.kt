@@ -25,6 +25,8 @@ val mainModule = module {
 
     single { Schedulers.io() }
 
+//    single { AndroidSchedulers.mainThread() }
+
     single<IMainRepo> { MainRepo(get()) }
 
     viewModel<MainActViewModel>()

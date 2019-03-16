@@ -4,6 +4,7 @@ import android.arch.lifecycle.*
 import com.example.facedetection.data.repo.general_photo_screen.IGeneralRepo
 import com.example.facedetection.ui.base.IBaseViewModel
 import com.example.facedetection.utils.Constants
+import com.example.facedetection.ui.base.LoadingState
 import com.example.facedetection.utils.LiveEvent
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
@@ -15,6 +16,14 @@ class GeneralPhotoScreenViewModel(
 
     private val noResultContentVisibility = MutableLiveData<Boolean>()
     private val checkPermission = LiveEvent<Boolean>()
+    private val progress = MutableLiveData<LoadingState>()
+
+    override fun setProgressState(state: LoadingState) {
+        progress.postValue(state)
+    }
+
+    override fun getProgressState(): LiveData<LoadingState> = progress
+
     private val disposable: CompositeDisposable = CompositeDisposable()
 
     init {

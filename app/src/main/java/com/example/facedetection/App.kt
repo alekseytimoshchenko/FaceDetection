@@ -1,10 +1,7 @@
 package com.example.facedetection
 
 import android.app.Application
-import com.example.facedetection.di.faceDetectedModule
-import com.example.facedetection.di.generalScreenModule
-import com.example.facedetection.di.mainModule
-import com.example.facedetection.di.notDefinedScreenModule
+import com.example.facedetection.di.*
 import com.facebook.stetho.Stetho
 import com.squareup.leakcanary.LeakCanary
 import org.koin.android.ext.android.startKoin
@@ -25,7 +22,8 @@ class App : Application() {
                 mainModule,
                 generalScreenModule,
                 notDefinedScreenModule,
-                faceDetectedModule
+                faceDetectedModule,
+                sharedModule
             )
         )
 

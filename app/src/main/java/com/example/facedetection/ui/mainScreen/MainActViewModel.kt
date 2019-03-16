@@ -4,6 +4,7 @@ import android.arch.lifecycle.*
 import com.example.facedetection.data.repo.main_act.IMainRepo
 import com.example.facedetection.ui.base.IBaseFragment
 import com.example.facedetection.ui.base.IBaseViewModel
+import com.example.facedetection.ui.base.LoadingState
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
@@ -16,9 +17,11 @@ class MainActViewModel(
     private val repo: IMainRepo,
     private val WORKER_SCHEDULER: Scheduler
 ) : ViewModel(), IBaseViewModel, LifecycleObserver {
-    private val disposable: CompositeDisposable = CompositeDisposable()
 
-    private val content: MutableLiveData<List<IBaseFragment>> = MutableLiveData()
+    private val disposable = CompositeDisposable()
+
+    private val progress = MutableLiveData<LoadingState>()
+    private val content = MutableLiveData<List<IBaseFragment>>()
 
     init {
         requestContent()
@@ -28,9 +31,18 @@ class MainActViewModel(
     fun onCreate() {
     }
 
+    override fun setProgressState(state: LoadingState) {
+        progress.postValue(state)
+    }
+
+    override fun getProgressState(): LiveData<LoadingState> = progress
+
     private fun requestContent() {
         disposable.add(
             repo.getContent()
+                .doOnSubscribe { setProgressState(LoadingState.LOADING) }
+                .doOnError { setProgressState(LoadingState.ERROR) }
+                .doFinally { setProgressState(LoadingState.SUCCESS) }
                 .subscribeOn(WORKER_SCHEDULER)
                 .subscribe(
                     { postContent(it) },
