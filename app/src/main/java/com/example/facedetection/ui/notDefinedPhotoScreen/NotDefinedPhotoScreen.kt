@@ -23,6 +23,18 @@ class NotDefinedPhotoScreen : BaseFragment() {
         lifecycle.addObserver(model)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setListeners()
+        setGui()
+    }
+
+    override fun setGui() {
+
+    }
+
+    override fun setListeners() {}
+
     companion object {
         // private val ARG_SECTION_NUMBER = "section_number"
 

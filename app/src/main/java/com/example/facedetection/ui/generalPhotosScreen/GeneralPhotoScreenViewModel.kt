@@ -18,6 +18,7 @@ class GeneralPhotoScreenViewModel(
 ) : ViewModel(), IBaseViewModel, LifecycleObserver {
 
     private val noResultContentVisibility = MutableLiveData<Boolean>()
+    private val contentContainerVisibility = MutableLiveData<Boolean>()
     private val checkPermission = LiveEvent<Boolean>()
     private val progress = LiveEvent<LoadingState>()
     private val screenContent = MutableLiveData<List<ImageObj>>()
@@ -55,10 +56,12 @@ class GeneralPhotoScreenViewModel(
                 .subscribe(
                     {
                         if (it.isEmpty()) {
+                            setContentContainerVisibility(false)
                             setNoResultContainerVisibility(true)
                         } else {
-                            setContent(it)
                             setNoResultContainerVisibility(false)
+                            setContentContainerVisibility(true)
+                            setContent(it)
                         }
                     },
                     { Timber.e(it) }
@@ -90,8 +93,18 @@ class GeneralPhotoScreenViewModel(
 
     fun noResultContainerVisibility(): LiveData<Boolean> = noResultContentVisibility
 
+    fun contentContainerVisibility(): LiveData<Boolean> = contentContainerVisibility
+
     private fun setNoResultContainerVisibility(state: Boolean) {
         noResultContentVisibility.postValue(state)
+    }
+
+    private fun setContentContainerVisibility(state: Boolean) {
+        contentContainerVisibility.postValue(state)
+    }
+
+    fun doOnDetectFacesClick() {
+
     }
 
     fun checkPermission(): LiveData<Boolean> = checkPermission

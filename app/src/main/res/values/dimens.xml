@@ -7,4 +7,9 @@
 
     <!--Text sizes-->
     <dimen name="text_size_20sp">20sp</dimen>
+
+    <!--spaces-->
+    <dimen name="large_space">16dp</dimen>
+    <dimen name="small_space">8dp</dimen>
+
 </resources>

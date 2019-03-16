@@ -7,6 +7,10 @@ interface IBaseFragment {
     fun getTitle(): String
 
     fun setProgress(state: LoadingState)
+
+    fun setListeners()
+
+    fun setGui()
 }
 
 abstract class BaseFragment : Fragment(), IBaseFragment {

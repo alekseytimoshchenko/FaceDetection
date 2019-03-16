@@ -15,6 +15,18 @@ class FaceDetectedPhotoScreen : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.frag_face_detected_photo_layout, container, false)
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setListeners()
+        setGui()
+    }
+
+    override fun setGui() {
+
+    }
+
+    override fun setListeners() {}
+
     companion object {
         fun newInstance(): FaceDetectedPhotoScreen = FaceDetectedPhotoScreen()
     }

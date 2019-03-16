@@ -5,20 +5,22 @@ import android.arch.lifecycle.Observer
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
+import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.facedetection.R
 import com.example.facedetection.data.local.model.ImageObj
 import com.example.facedetection.ui.base.BaseFragment
+import com.example.facedetection.ui.base.IAdapter
+import com.example.facedetection.ui.generalPhotosScreen.adapters.GeneralPhotoAdapter
 import com.example.facedetection.utils.Constants
 import kotlinx.android.synthetic.main.frag_general_photos_layout.*
 import org.koin.android.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class GeneralPhotosScreen : BaseFragment() {
 
-    private val model: GeneralPhotoScreenViewModel by viewModel()
+    private val model by viewModel<GeneralPhotoScreenViewModel>()
 
     override fun getTitle(): String = "All"
 
@@ -34,11 +36,23 @@ class GeneralPhotosScreen : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setListeners()
+        setGui()
     }
 
-    private fun setListeners() {
+    override fun setGui() {
+        rv_general_screen_all_photos.apply {
+            layoutManager = GridLayoutManager(context.applicationContext, Constants.GRID_COLOMNS)
+            adapter = GeneralPhotoAdapter()
+        }
+    }
+
+    override fun setListeners() {
         tv_general_photos_try_load.setOnClickListener {
             model.doOnTryToLoadContentClick()
+        }
+
+        b_general_screen_detect_faces.setOnClickListener {
+            model.doOnDetectFacesClick()
         }
     }
 
@@ -52,9 +66,16 @@ class GeneralPhotosScreen : BaseFragment() {
         g_genera_photos_no_result.visibility = if (state) View.VISIBLE else View.GONE
     }
 
+    private fun setContentContainerVisibility(state: Boolean) {
+        g_general_screen_content.visibility = if (state) View.VISIBLE else View.GONE
+    }
+
     private fun observeLiveData() {
         model.noResultContainerVisibility()
             .observe(viewLifecycleOwner, Observer { it?.let { setNoResultContainerVisibility(it) } })
+
+        model.contentContainerVisibility()
+            .observe(viewLifecycleOwner, Observer { it?.let { setContentContainerVisibility(it) } })
 
         model.checkPermission()
             .observe(viewLifecycleOwner, Observer { it?.let { checkPermission() } })
@@ -65,7 +86,7 @@ class GeneralPhotosScreen : BaseFragment() {
     }
 
     private fun setScreenContent(content: List<ImageObj>) {
-        Timber.d("")
+        (rv_general_screen_all_photos as IAdapter<List<ImageObj>>).setContent(content)
     }
 
     private fun checkPermission() {
