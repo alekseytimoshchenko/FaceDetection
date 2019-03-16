@@ -9,10 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.facedetection.R
+import com.example.facedetection.data.local.model.ImageObj
 import com.example.facedetection.ui.base.BaseFragment
 import com.example.facedetection.utils.Constants
 import kotlinx.android.synthetic.main.frag_general_photos_layout.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class GeneralPhotosScreen : BaseFragment() {
 
@@ -56,6 +58,14 @@ class GeneralPhotosScreen : BaseFragment() {
 
         model.checkPermission()
             .observe(viewLifecycleOwner, Observer { it?.let { checkPermission() } })
+
+        model.getProgressState().observe(this, Observer { it?.let { setProgress(it) } })
+
+        model.screenContent().observe(this, Observer { it?.let { setScreenContent(it) } })
+    }
+
+    private fun setScreenContent(content: List<ImageObj>) {
+        Timber.d("")
     }
 
     private fun checkPermission() {

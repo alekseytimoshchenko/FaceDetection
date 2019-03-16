@@ -5,6 +5,7 @@ import com.example.facedetection.data.repo.main_act.IMainRepo
 import com.example.facedetection.ui.base.IBaseFragment
 import com.example.facedetection.ui.base.IBaseViewModel
 import com.example.facedetection.ui.base.LoadingState
+import com.example.facedetection.utils.LiveEvent
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
@@ -20,7 +21,7 @@ class MainActViewModel(
 
     private val disposable = CompositeDisposable()
 
-    private val progress = MutableLiveData<LoadingState>()
+    private val progress = LiveEvent<LoadingState>()
     private val content = MutableLiveData<List<IBaseFragment>>()
 
     init {

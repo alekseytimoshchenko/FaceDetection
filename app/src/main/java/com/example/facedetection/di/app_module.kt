@@ -1,5 +1,7 @@
 package com.example.facedetection.di
 
+import com.example.facedetection.data.local.model.IImageFactory
+import com.example.facedetection.data.local.model.ImageFactory
 import com.example.facedetection.data.repo.face_detected_photo_screen.FaceDetectedRepo
 import com.example.facedetection.data.repo.face_detected_photo_screen.IFaceDetectedRepo
 import com.example.facedetection.data.repo.general_photo_screen.GeneralRepo
@@ -25,14 +27,14 @@ val mainModule = module {
 
     single { Schedulers.io() }
 
-//    single { AndroidSchedulers.mainThread() }
-
     single<IMainRepo> { MainRepo(get()) }
 
     viewModel<MainActViewModel>()
 }
 
 val generalScreenModule = module {
+
+    factory<IImageFactory> { ImageFactory() }
 
     single<IGeneralRepo> { GeneralRepo() }
 

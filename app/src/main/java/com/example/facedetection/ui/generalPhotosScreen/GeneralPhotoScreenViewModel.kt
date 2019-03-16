@@ -1,22 +1,26 @@
 package com.example.facedetection.ui.generalPhotosScreen
 
 import android.arch.lifecycle.*
+import com.example.facedetection.data.local.model.IImageFactory
+import com.example.facedetection.data.local.model.ImageObj
 import com.example.facedetection.data.repo.general_photo_screen.IGeneralRepo
 import com.example.facedetection.ui.base.IBaseViewModel
-import com.example.facedetection.utils.Constants
 import com.example.facedetection.ui.base.LoadingState
 import com.example.facedetection.utils.LiveEvent
+import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
-import java.io.File
 
 class GeneralPhotoScreenViewModel(
-    private val repo: IGeneralRepo
+    private val repo: IGeneralRepo,
+    private val WORKER_SCHEDULER: Scheduler,
+    private val imageFactory: IImageFactory
 ) : ViewModel(), IBaseViewModel, LifecycleObserver {
 
     private val noResultContentVisibility = MutableLiveData<Boolean>()
     private val checkPermission = LiveEvent<Boolean>()
-    private val progress = MutableLiveData<LoadingState>()
+    private val progress = LiveEvent<LoadingState>()
+    private val screenContent = MutableLiveData<List<ImageObj>>()
 
     override fun setProgressState(state: LoadingState) {
         progress.postValue(state)
@@ -35,10 +39,38 @@ class GeneralPhotoScreenViewModel(
     }
 
     fun requestContent() {
-//        disposable.add(
-//            repo.allPhotos()
-//        )
+        disposable.add(
+            repo.allPhotos()
+                .map { it.toList() }
+                .toObservable()
+                .flatMapIterable { it }
+                .filter { it.name.contains(".jpg") || it.name.contains(".png") }
+                .map { it.absolutePath }
+                .map { imageFactory.create(it) }
+                .toList()
+                .doOnSubscribe { setProgressState(LoadingState.LOADING) }
+                .doOnError { setProgressState(LoadingState.ERROR) }
+                .doFinally { setProgressState(LoadingState.SUCCESS) }
+                .subscribeOn(WORKER_SCHEDULER)
+                .subscribe(
+                    {
+                        if (it.isEmpty()) {
+                            setNoResultContainerVisibility(true)
+                        } else {
+                            setContent(it)
+                            setNoResultContainerVisibility(false)
+                        }
+                    },
+                    { Timber.e(it) }
+                )
+        )
     }
+
+    private fun setContent(content: List<ImageObj>) {
+        screenContent.postValue(content)
+    }
+
+    fun screenContent(): LiveData<List<ImageObj>> = screenContent
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
@@ -64,20 +96,6 @@ class GeneralPhotoScreenViewModel(
 
     fun checkPermission(): LiveData<Boolean> = checkPermission
 
-    private fun testDeleteIt() {
-        val photoList = mutableListOf<String>()
+    //        Glide.with(this).load("http://goo.gl/gEgYUd").into(imageView)
 
-        val files = File(Constants.CAMERA_FOLDER_PATH).listFiles()
-
-        for (tmp in files) {
-            if (tmp.name.contains(".jpg") || tmp.name.contains(".png")) {
-                photoList.add(tmp.absolutePath)
-            }
-        }
-
-        Timber.e("HERE")
-
-//        Glide.with(this).load("http://goo.gl/gEgYUd").into(imageView)
-//        Glide.with(this).load(photoList[0]).into(iv_test_delete_it)
-    }
 }
