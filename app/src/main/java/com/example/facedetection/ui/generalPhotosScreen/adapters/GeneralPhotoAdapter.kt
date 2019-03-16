@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.facedetection.R
 import com.example.facedetection.data.local.model.IImageObj
 import com.example.facedetection.ui.base.BaseHolder
@@ -42,6 +43,11 @@ class GeneralPhotoAdapter : IAdapter<List<IImageObj>>, RecyclerView.Adapter<Gene
 
             Glide.with(view)
                 .load(item.getImagePath())
+//                .apply(RequestOptions().override(150, 150))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .fitCenter()
+                .placeholder(R.drawable.ic_empty_folder)
+                .error(R.drawable.ic_empty_folder)
                 .into(imageView)
         }
     }

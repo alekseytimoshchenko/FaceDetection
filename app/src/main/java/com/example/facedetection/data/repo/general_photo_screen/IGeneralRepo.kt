@@ -6,4 +6,6 @@ import java.io.File
 
 interface IGeneralRepo : IBaseRepo {
     fun allPhotos(): Single<Array<File>>
+
+    fun getCameraPath(): Single<String>
 }

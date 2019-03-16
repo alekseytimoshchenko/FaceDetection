@@ -21,6 +21,7 @@ class GeneralPhotoScreenViewModel(
     private val contentContainerVisibility = MutableLiveData<Boolean>()
     private val checkPermission = LiveEvent<Boolean>()
     private val progress = LiveEvent<LoadingState>()
+    private val showEmptyFolderToast = LiveEvent<Boolean>()
     private val screenContent = MutableLiveData<List<IImageObj>>()
 
     override fun setProgressState(state: LoadingState) {
@@ -58,6 +59,7 @@ class GeneralPhotoScreenViewModel(
                         if (it.isEmpty()) {
                             setContentContainerVisibility(false)
                             setNoResultContainerVisibility(true)
+                            doShowEmptyFolderToast()
                         } else {
                             setNoResultContainerVisibility(false)
                             setContentContainerVisibility(true)
@@ -67,6 +69,12 @@ class GeneralPhotoScreenViewModel(
                     { Timber.e(it) }
                 )
         )
+    }
+
+    fun showEmptyFolderToast() = showEmptyFolderToast
+
+    private fun doShowEmptyFolderToast() {
+        showEmptyFolderToast.postValue(true)
     }
 
     private fun setContent(content: List<IImageObj>) {
@@ -105,6 +113,11 @@ class GeneralPhotoScreenViewModel(
 
     fun doOnDetectFacesClick() {
 
+    }
+
+    fun permissionDenied() {
+        setContentContainerVisibility(false)
+        setNoResultContainerVisibility(true)
     }
 
     fun checkPermission(): LiveData<Boolean> = checkPermission

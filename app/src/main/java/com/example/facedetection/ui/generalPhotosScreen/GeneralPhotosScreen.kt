@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.facedetection.R
 import com.example.facedetection.data.local.model.IImageObj
 import com.example.facedetection.ui.base.BaseFragment
@@ -41,7 +42,7 @@ class GeneralPhotosScreen : BaseFragment() {
 
     override fun setGui() {
         rv_general_screen_all_photos.apply {
-            layoutManager = GridLayoutManager(context.applicationContext, Constants.GRID_COLOMNS)
+            layoutManager = GridLayoutManager(context.applicationContext, Constants.GRID_COLUMNS)
             adapter = GeneralPhotoAdapter()
         }
     }
@@ -83,6 +84,8 @@ class GeneralPhotosScreen : BaseFragment() {
         model.getProgressState().observe(this, Observer { it?.let { setProgress(it) } })
 
         model.screenContent().observe(this, Observer { it?.let { setScreenContent(it) } })
+
+        model.showEmptyFolderToast().observe(this, Observer { it?.let { showEmptyFolderToast() } })
     }
 
     private fun setScreenContent(content: List<IImageObj>) {
@@ -104,11 +107,16 @@ class GeneralPhotosScreen : BaseFragment() {
         }
     }
 
+    private fun showEmptyFolderToast() {
+        Toast.makeText(context?.applicationContext, getString(R.string.empty_folder), Toast.LENGTH_LONG).show()
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
             Constants.REQUEST_READ_EXTERNAL_STORAGE -> {
                 grantResults.forEach {
                     if (it != PackageManager.PERMISSION_GRANTED) {
+                        model.permissionDenied()
                         return
                     }
                 }
