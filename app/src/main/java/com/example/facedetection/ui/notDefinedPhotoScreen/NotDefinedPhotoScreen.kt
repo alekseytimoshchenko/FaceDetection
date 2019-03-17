@@ -10,7 +10,7 @@ import com.example.facedetection.R
 import com.example.facedetection.data.local.model.IImageObj
 import com.example.facedetection.ui.base.BaseFragment
 import com.example.facedetection.ui.base.IAdapter
-import com.example.facedetection.ui.faceDetectedPhotoScreen.adapters.FaceDetectedAdapter
+import com.example.facedetection.ui.notDefinedPhotoScreen.adapters.NotDefinedAdapter
 import com.example.facedetection.utils.Constants
 import kotlinx.android.synthetic.main.frag_not_defined_photo_layout.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -70,7 +70,7 @@ class NotDefinedPhotoScreen : BaseFragment() {
     override fun setGui() {
         rv_not_face_detected.apply {
             layoutManager = GridLayoutManager(context.applicationContext, Constants.GRID_COLUMNS)
-            adapter = FaceDetectedAdapter()
+            adapter = NotDefinedAdapter()
         }
     }
 

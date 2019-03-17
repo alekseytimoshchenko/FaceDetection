@@ -43,7 +43,7 @@ dependencies {
     //Koin - DI
     implementation "org.koin:koin-android-viewmodel:${libs.koin}"
 
-    // Rx
+    //Rx
     implementation "io.reactivex.rxjava2:rxkotlin:${libs.rxkotlin}"
     implementation "io.reactivex.rxjava2:rxandroid:${libs.rx2Android}"
 

@@ -19,7 +19,6 @@ import com.example.facedetection.ui.mainScreen.MainActViewModel
 import com.example.facedetection.ui.notDefinedPhotoScreen.NotDefinedPhotoScreenViewModel
 import io.reactivex.schedulers.Schedulers
 import org.koin.android.viewmodel.experimental.builder.viewModel
-import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 import org.koin.experimental.builder.factory
 
@@ -47,7 +46,7 @@ val generalScreenModule = module {
 val notDefinedScreenModule = module {
     single<INotDefinedRepo> { NotDefinedRepo() }
 
-    viewModel { NotDefinedPhotoScreenViewModel(get()) }
+    viewModel<NotDefinedPhotoScreenViewModel>()
 }
 
 val faceDetectedModule = module {
