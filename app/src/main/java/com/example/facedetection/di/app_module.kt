@@ -17,6 +17,8 @@ import com.example.facedetection.ui.faceDetectedPhotoScreen.FaceDetectedViewMode
 import com.example.facedetection.ui.generalPhotosScreen.GeneralPhotoScreenViewModel
 import com.example.facedetection.ui.mainScreen.MainActViewModel
 import com.example.facedetection.ui.notDefinedPhotoScreen.NotDefinedPhotoScreenViewModel
+import com.example.facedetection.utils.IImageProcessor
+import com.example.facedetection.utils.ImageProcessor
 import io.reactivex.schedulers.Schedulers
 import org.koin.android.viewmodel.experimental.builder.viewModel
 import org.koin.dsl.module.module
@@ -36,9 +38,9 @@ val generalScreenModule = module {
 
     factory<IImageFactory> { ImageFactory() }
 
-    factory { App.instance }
+    single<IImageProcessor> { ImageProcessor() }
 
-    factory { App.instance.imageDb.imageDao() }
+    single { App.instance.imageDb.imageDao() }
 
     single<IGeneralRepo> { GeneralRepo() }
 

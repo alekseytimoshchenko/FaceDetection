@@ -1,6 +1,7 @@
 package com.example.facedetection.ui.faceDetectedPhotoScreen
 
 import android.arch.lifecycle.*
+import com.example.facedetection.data.local.db.ImageDao
 import com.example.facedetection.data.local.model.IImageObj
 import com.example.facedetection.data.repo.face_detected_photo_screen.IFaceDetectedRepo
 import com.example.facedetection.ui.base.IBaseViewModel
@@ -10,6 +11,7 @@ import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 
 class FaceDetectedViewModel(
+    private val imageDao: ImageDao,
     private val repo: IFaceDetectedRepo,
     private val WORKER_SCHEDULER: Scheduler
 ) : ViewModel(), IBaseViewModel, LifecycleObserver {

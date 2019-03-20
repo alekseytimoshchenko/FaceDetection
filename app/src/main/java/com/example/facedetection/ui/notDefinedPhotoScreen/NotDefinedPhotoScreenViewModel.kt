@@ -1,6 +1,7 @@
 package com.example.facedetection.ui.notDefinedPhotoScreen
 
 import android.arch.lifecycle.*
+import com.example.facedetection.data.local.db.ImageDao
 import com.example.facedetection.data.local.model.IImageObj
 import com.example.facedetection.data.repo.not_defined_photo_screen.INotDefinedRepo
 import com.example.facedetection.ui.base.IBaseViewModel
@@ -11,6 +12,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 class NotDefinedPhotoScreenViewModel(
     private val repo: INotDefinedRepo,
+    private val imageDao: ImageDao,
     private val WORKER_SCHEDULER: Scheduler
 ) : ViewModel(), IBaseViewModel, LifecycleObserver {
 

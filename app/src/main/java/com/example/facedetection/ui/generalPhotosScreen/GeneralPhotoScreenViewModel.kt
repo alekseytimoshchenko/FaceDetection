@@ -11,6 +11,7 @@ import com.example.facedetection.data.local.model.ImageObj
 import com.example.facedetection.data.repo.general_photo_screen.IGeneralRepo
 import com.example.facedetection.ui.base.IBaseViewModel
 import com.example.facedetection.ui.base.LoadingState
+import com.example.facedetection.utils.IImageProcessor
 import com.example.facedetection.utils.LiveEvent
 import io.reactivex.Scheduler
 import io.reactivex.Single
@@ -19,7 +20,7 @@ import timber.log.Timber
 
 class GeneralPhotoScreenViewModel(
     app: Application,
-//    private val imageProcessor: IImageProcessor,
+    private val imageProcessor: IImageProcessor,
     private val imageDao: ImageDao,
     private val repo: IGeneralRepo,
     private val WORKER_SCHEDULER: Scheduler,
