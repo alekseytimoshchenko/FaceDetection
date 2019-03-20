@@ -5,7 +5,6 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import com.example.facedetection.data.local.model.ImageObj
-import io.reactivex.Completable
 import io.reactivex.Flowable
 
 /**
@@ -26,7 +25,7 @@ interface ImageDao {
      * @param image the image to be inserted.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertImage(image: ImageObj): Completable
+    fun insertImage(image: ImageObj): Long
 
     /**
      * Delete all [ImageObj]'s.

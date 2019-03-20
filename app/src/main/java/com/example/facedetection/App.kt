@@ -1,6 +1,7 @@
 package com.example.facedetection
 
 import android.app.Application
+import com.example.facedetection.data.local.db.ImageDB
 import com.example.facedetection.di.*
 import com.facebook.stetho.Stetho
 import com.squareup.leakcanary.LeakCanary
@@ -13,8 +14,13 @@ class App : Application() {
             private set
     }
 
+    lateinit var imageDb: ImageDB
+        private set
+
     override fun onCreate() {
         super.onCreate()
+
+        imageDb = ImageDB.getInstance(this)
 
         startKoin(
             this,
