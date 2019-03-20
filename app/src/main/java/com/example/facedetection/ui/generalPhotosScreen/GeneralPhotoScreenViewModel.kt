@@ -7,16 +7,19 @@ import com.example.facedetection.R
 import com.example.facedetection.data.local.db.ImageDao
 import com.example.facedetection.data.local.model.IImageFactory
 import com.example.facedetection.data.local.model.IImageObj
+import com.example.facedetection.data.local.model.ImageObj
 import com.example.facedetection.data.repo.general_photo_screen.IGeneralRepo
 import com.example.facedetection.ui.base.IBaseViewModel
 import com.example.facedetection.ui.base.LoadingState
 import com.example.facedetection.utils.LiveEvent
 import io.reactivex.Scheduler
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 
 class GeneralPhotoScreenViewModel(
     app: Application,
+//    private val imageProcessor: IImageProcessor,
     private val imageDao: ImageDao,
     private val repo: IGeneralRepo,
     private val WORKER_SCHEDULER: Scheduler,
@@ -43,30 +46,38 @@ class GeneralPhotoScreenViewModel(
         checkPermissions()
     }
 
-//    private fun testDelteIt() {
-//        disposable.addAll(
-//            imageDao.insertImage(ImageObj("my_path", IImageObj.NOT_DETECTED))
-//                .delay(2000, TimeUnit.MILLISECONDS)
-//                .subscribeOn(WORKER_SCHEDULER)
-//                .subscribe(
-//                    { getAllImages() },
-//                    { Timber.e(it) }
-//                )
-//        )
-//    }
-//
-//    private fun getAllImages() {
-//        disposable.addAll(
-//            imageDao.getAllImages()
-//                .delay(2000, TimeUnit.MILLISECONDS)
-//                .subscribeOn(WORKER_SCHEDULER)
-//                .map { it.size }
-//                .subscribe(
-//                    { Timber.d(it.toString()) },
-//                    { Timber.e(it) }
-//                )
-//        )
-//    }
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    fun onCreate() {
+    }
+
+    private fun insertImage(image: ImageObj) {
+        disposable.addAll(
+            Single.just(image)
+                .map { imageDao.insertImage(it) }
+                .doOnSubscribe { setProgressState(LoadingState.LOADING) }
+                .doOnError { setProgressState(LoadingState.ERROR) }
+                .doFinally { setProgressState(LoadingState.SUCCESS) }
+                .subscribeOn(WORKER_SCHEDULER)
+                .subscribe(
+                    {  },
+                    { Timber.e(it) }
+                )
+        )
+    }
+
+    private fun getAllImages() {
+        disposable.addAll(
+            imageDao.getAllImages()
+                .doOnSubscribe { setProgressState(LoadingState.LOADING) }
+                .doOnError { setProgressState(LoadingState.ERROR) }
+                .doFinally { setProgressState(LoadingState.SUCCESS) }
+                .subscribeOn(WORKER_SCHEDULER)
+                .subscribe(
+                    { Timber.d(it.toString()) },
+                    { Timber.e(it) }
+                )
+        )
+    }
 
     private fun checkPermissions() {
         checkPermission.postValue(true)
@@ -121,11 +132,6 @@ class GeneralPhotoScreenViewModel(
     }
 
     fun screenContent(): LiveData<List<IImageObj>> = screenContent
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun onCreate() {
-//        testDelteIt()
-    }
 
     override fun onCleared() {
         super.onCleared()
