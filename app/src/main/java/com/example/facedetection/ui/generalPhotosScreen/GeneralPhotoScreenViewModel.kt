@@ -4,6 +4,7 @@ import android.app.Application
 import android.arch.lifecycle.*
 import com.example.facedetection.App
 import com.example.facedetection.R
+import com.example.facedetection.data.local.db.ImageDao
 import com.example.facedetection.data.local.model.IImageFactory
 import com.example.facedetection.data.local.model.IImageObj
 import com.example.facedetection.data.repo.general_photo_screen.IGeneralRepo
@@ -16,6 +17,7 @@ import timber.log.Timber
 
 class GeneralPhotoScreenViewModel(
     app: Application,
+    private val imageDao: ImageDao,
     private val repo: IGeneralRepo,
     private val WORKER_SCHEDULER: Scheduler,
     private val imageFactory: IImageFactory
@@ -41,6 +43,31 @@ class GeneralPhotoScreenViewModel(
         checkPermissions()
     }
 
+//    private fun testDelteIt() {
+//        disposable.addAll(
+//            imageDao.insertImage(ImageObj("my_path", IImageObj.NOT_DETECTED))
+//                .delay(2000, TimeUnit.MILLISECONDS)
+//                .subscribeOn(WORKER_SCHEDULER)
+//                .subscribe(
+//                    { getAllImages() },
+//                    { Timber.e(it) }
+//                )
+//        )
+//    }
+//
+//    private fun getAllImages() {
+//        disposable.addAll(
+//            imageDao.getAllImages()
+//                .delay(2000, TimeUnit.MILLISECONDS)
+//                .subscribeOn(WORKER_SCHEDULER)
+//                .map { it.size }
+//                .subscribe(
+//                    { Timber.d(it.toString()) },
+//                    { Timber.e(it) }
+//                )
+//        )
+//    }
+
     private fun checkPermissions() {
         checkPermission.postValue(true)
     }
@@ -53,7 +80,7 @@ class GeneralPhotoScreenViewModel(
                 .flatMapIterable { it }
                 .filter { it.name.contains(".jpg") || it.name.contains(".png") }
                 .map { it.absolutePath }
-                .map { imageFactory.create(it) }
+                .map { imageFactory.create(it, IImageObj.NOT_DETECTED) }
                 .toList()
                 .doOnSubscribe { setProgressState(LoadingState.LOADING) }
                 .doOnError { setProgressState(LoadingState.ERROR) }
@@ -69,7 +96,13 @@ class GeneralPhotoScreenViewModel(
                             setNoResultContainerVisibility(false)
                             setContentContainerVisibility(true)
                             setContent(it)
-                            doShowToast(String.format("%s %s", getApplication<App>().getString(R.string.photo_num), it.size))
+                            doShowToast(
+                                String.format(
+                                    "%s %s",
+                                    getApplication<App>().getString(R.string.photo_num),
+                                    it.size
+                                )
+                            )
                         }
                     },
                     { Timber.e(it) }
@@ -91,6 +124,7 @@ class GeneralPhotoScreenViewModel(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
+//        testDelteIt()
     }
 
     override fun onCleared() {

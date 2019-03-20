@@ -1,6 +1,7 @@
 package com.example.facedetection.di
 
 import com.example.facedetection.App
+import com.example.facedetection.data.local.db.ImageDB
 import com.example.facedetection.data.local.model.IImageFactory
 import com.example.facedetection.data.local.model.ImageFactory
 import com.example.facedetection.data.repo.face_detected_photo_screen.FaceDetectedRepo
@@ -18,6 +19,7 @@ import com.example.facedetection.ui.generalPhotosScreen.GeneralPhotoScreenViewMo
 import com.example.facedetection.ui.mainScreen.MainActViewModel
 import com.example.facedetection.ui.notDefinedPhotoScreen.NotDefinedPhotoScreenViewModel
 import io.reactivex.schedulers.Schedulers
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.viewmodel.experimental.builder.viewModel
 import org.koin.dsl.module.module
 import org.koin.experimental.builder.factory
@@ -37,6 +39,8 @@ val generalScreenModule = module {
     factory<IImageFactory> { ImageFactory() }
 
     factory { App.instance }
+
+    single { ImageDB.getInstance(androidApplication()) }
 
     single<IGeneralRepo> { GeneralRepo() }
 
