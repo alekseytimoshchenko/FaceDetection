@@ -12,7 +12,10 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
-            tools:ignore="GoogleAppIndexingWarning">
+            tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <meta-data
+                android:name="com.google.android.gms.vision.DEPENDENCIES"
+                android:value="face"/>
         <activity
                 android:name=".ui.mainScreen.MainActivity"
                 android:label="@string/app_name"

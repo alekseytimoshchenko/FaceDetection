@@ -38,7 +38,7 @@ val generalScreenModule = module {
 
     factory<IImageFactory> { ImageFactory() }
 
-    single<IImageProcessor> { ImageProcessor() }
+    factory<IImageProcessor> { ImageProcessor() }
 
     single { App.instance.imageDb.imageDao() }
 

@@ -2,6 +2,7 @@ package com.example.facedetection.ui.generalPhotosScreen
 
 import android.app.Application
 import android.arch.lifecycle.*
+import androidx.work.Data
 import com.example.facedetection.App
 import com.example.facedetection.R
 import com.example.facedetection.data.local.db.ImageDao
@@ -17,6 +18,8 @@ import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
+import java.util.*
+
 
 class GeneralPhotoScreenViewModel(
     app: Application,
@@ -34,6 +37,7 @@ class GeneralPhotoScreenViewModel(
     private val checkPermission = LiveEvent<Boolean>()
     private val progress = LiveEvent<LoadingState>()
     private val showToast = LiveEvent<String>()
+    private val imageRequestUpdates = LiveEvent<UUID>()
 
     override fun setProgressState(state: LoadingState) {
         progress.postValue(state)
@@ -60,7 +64,7 @@ class GeneralPhotoScreenViewModel(
                 .doFinally { setProgressState(LoadingState.SUCCESS) }
                 .subscribeOn(WORKER_SCHEDULER)
                 .subscribe(
-                    {  },
+                    { },
                     { Timber.e(it) }
                 )
         )
@@ -86,14 +90,7 @@ class GeneralPhotoScreenViewModel(
 
     fun requestContent() {
         disposable.add(
-            repo.allPhotos()
-                .map { it.toList() }
-                .toObservable()
-                .flatMapIterable { it }
-                .filter { it.name.contains(".jpg") || it.name.contains(".png") }
-                .map { it.absolutePath }
-                .map { imageFactory.create(it, IImageObj.NOT_DETECTED) }
-                .toList()
+            getImageObjsList()
                 .doOnSubscribe { setProgressState(LoadingState.LOADING) }
                 .doOnError { setProgressState(LoadingState.ERROR) }
                 .doFinally { setProgressState(LoadingState.SUCCESS) }
@@ -120,6 +117,17 @@ class GeneralPhotoScreenViewModel(
                     { Timber.e(it) }
                 )
         )
+    }
+
+    private fun getImageObjsList(): Single<MutableList<IImageObj>> {
+        return repo.allPhotos()
+            .map { it.toList() }
+            .toObservable()
+            .flatMapIterable { it }
+            .filter { it.name.contains(".jpg") || it.name.contains(".png") }
+            .map { it.absolutePath }
+            .map { imageFactory.create(it, IImageObj.NOT_DETECTED) }
+            .toList()
     }
 
     fun showToast() = showToast
@@ -160,12 +168,44 @@ class GeneralPhotoScreenViewModel(
 
     fun doOnDetectFacesClick() {
 
+        disposable.add(
+            getImageObjsList()
+                .doOnSubscribe { setProgressState(LoadingState.LOADING) }
+                .doOnError { setProgressState(LoadingState.ERROR) }
+                .doFinally { setProgressState(LoadingState.SUCCESS) }
+                .subscribeOn(WORKER_SCHEDULER)
+                .subscribe(
+                    {},
+                    {}
+                )
+        )
+
+        val inputData = Data.Builder()
+            .build()
+
+        disposable.add(
+            imageProcessor.startFaceDetectProcess()
+                .doOnSubscribe { setProgressState(LoadingState.LOADING) }
+                .doOnError { setProgressState(LoadingState.ERROR) }
+                .doFinally { setProgressState(LoadingState.SUCCESS) }
+                .subscribeOn(WORKER_SCHEDULER)
+                .subscribe(
+                    {imageWorkerRequestUpdate(it)},
+                    {}
+                )
+        )
     }
 
     fun permissionDenied() {
         setContentContainerVisibility(false)
         setNoResultContainerVisibility(true)
     }
+
+    private fun imageWorkerRequestUpdate(id: UUID){
+        imageRequestUpdates.postValue(id)
+    }
+
+    fun subscribeToImageRequestUpdates() : LiveData<UUID> = imageRequestUpdates
 
     fun checkPermission(): LiveData<Boolean> = checkPermission
 }

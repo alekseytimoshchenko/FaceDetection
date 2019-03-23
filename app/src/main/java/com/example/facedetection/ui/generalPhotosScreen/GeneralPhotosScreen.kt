@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.work.WorkManager
 import com.example.facedetection.R
 import com.example.facedetection.data.local.model.IImageObj
 import com.example.facedetection.ui.base.BaseFragment
@@ -18,6 +19,8 @@ import com.example.facedetection.ui.generalPhotosScreen.adapters.GeneralPhotoAda
 import com.example.facedetection.utils.Constants
 import kotlinx.android.synthetic.main.frag_general_photos_layout.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import timber.log.Timber
+import java.util.*
 
 class GeneralPhotosScreen : BaseFragment() {
 
@@ -45,6 +48,18 @@ class GeneralPhotosScreen : BaseFragment() {
             layoutManager = GridLayoutManager(context.applicationContext, Constants.GRID_COLUMNS)
             adapter = GeneralPhotoAdapter()
         }
+    }
+
+    private fun subscribeToImageRequestUpdates(id: UUID) {
+        WorkManager.getInstance()
+            .getStatusById(id)
+            .observe(viewLifecycleOwner,
+                Observer { workStatus ->
+                    if (workStatus != null && workStatus.state.isFinished) {
+                    }
+
+                    Timber.e("onChanged: %s", workStatus!!.state)
+                })
     }
 
     override fun setListeners() {
@@ -78,14 +93,17 @@ class GeneralPhotosScreen : BaseFragment() {
         model.contentContainerVisibility()
             .observe(viewLifecycleOwner, Observer { it?.let { setContentContainerVisibility(it) } })
 
-        model.getProgressState().observe(this, Observer { it?.let { setProgress(it) } })
+        model.getProgressState().observe(viewLifecycleOwner, Observer { it?.let { setProgress(it) } })
 
-        model.screenContent().observe(this, Observer { it?.let { setScreenContent(it) } })
+        model.screenContent().observe(viewLifecycleOwner, Observer { it?.let { setScreenContent(it) } })
 
         model.checkPermission()
             .observe(viewLifecycleOwner, Observer { it?.let { checkPermission() } })
 
-        model.showToast().observe(this, Observer { it?.let { showToast(it) } })
+        model.showToast().observe(viewLifecycleOwner, Observer { it?.let { showToast(it) } })
+
+        model.subscribeToImageRequestUpdates()
+            .observe(viewLifecycleOwner, Observer { it?.let { subscribeToImageRequestUpdates(it) } })
     }
 
     private fun setScreenContent(content: List<IImageObj>) {

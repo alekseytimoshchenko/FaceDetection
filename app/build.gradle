@@ -40,6 +40,10 @@ dependencies {
     implementation "com.android.support:design:${libs.supportVersion}"
     implementation "com.android.support.constraint:constraint-layout:${libs.constraintLayoutVersion}"
     implementation "com.android.support:recyclerview-v7:${libs.supportVersion}"
+    implementation "com.google.android.gms:play-services-vision:${libs.playServices}"
+
+    //WorkManager
+    implementation "android.arch.work:work-runtime:${libs.workManager}"
 
     //Koin - DI
     implementation "org.koin:koin-android-viewmodel:${libs.koin}"
