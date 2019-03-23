@@ -42,7 +42,7 @@ val generalScreenModule = module {
 
     single { App.instance.imageDb.imageDao() }
 
-    single<IGeneralRepo> { GeneralRepo() }
+    single<IGeneralRepo> { GeneralRepo(get()) }
 
     viewModel<GeneralPhotoScreenViewModel>()
 }

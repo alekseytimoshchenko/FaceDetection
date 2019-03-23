@@ -1,11 +1,16 @@
 package com.example.facedetection.data.repo.general_photo_screen
 
 import android.os.Environment
+import com.example.facedetection.data.local.db.ImageDao
 import com.example.facedetection.utils.Constants
 import io.reactivex.Single
 import java.io.File
 
-class GeneralRepo : IGeneralRepo {
+class GeneralRepo(private val db: ImageDao) : IGeneralRepo {
+    override fun nukeAllImages() {
+        db.nukeAllImages()
+    }
+
     override fun getCameraPath(): Single<String> {
         return Single.just(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM))
             .map { it.toString() }

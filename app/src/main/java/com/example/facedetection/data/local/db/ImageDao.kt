@@ -28,8 +28,15 @@ interface ImageDao {
     fun insertImage(image: ImageObj): Long
 
     /**
+     * Insert a [ImageObj] in the database. If the [ImageObj] already exists, replace it.
+     * @param image the image to be inserted.
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertImages(image: List<ImageObj>): List<Long>
+
+    /**
      * Delete all [ImageObj]'s.
      */
     @Query("DELETE FROM image_db_obj")
-    fun deleteAllImages()
+    fun nukeAllImages()
 }

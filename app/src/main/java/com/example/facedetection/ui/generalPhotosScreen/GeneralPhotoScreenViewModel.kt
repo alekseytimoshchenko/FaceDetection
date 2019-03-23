@@ -2,13 +2,10 @@ package com.example.facedetection.ui.generalPhotosScreen
 
 import android.app.Application
 import android.arch.lifecycle.*
-import androidx.work.Data
 import com.example.facedetection.App
 import com.example.facedetection.R
-import com.example.facedetection.data.local.db.ImageDao
 import com.example.facedetection.data.local.model.IImageFactory
 import com.example.facedetection.data.local.model.IImageObj
-import com.example.facedetection.data.local.model.ImageObj
 import com.example.facedetection.data.repo.general_photo_screen.IGeneralRepo
 import com.example.facedetection.ui.base.IBaseViewModel
 import com.example.facedetection.ui.base.LoadingState
@@ -24,7 +21,6 @@ import java.util.*
 class GeneralPhotoScreenViewModel(
     app: Application,
     private val imageProcessor: IImageProcessor,
-    private val imageDao: ImageDao,
     private val repo: IGeneralRepo,
     private val WORKER_SCHEDULER: Scheduler,
     private val imageFactory: IImageFactory
@@ -53,35 +49,6 @@ class GeneralPhotoScreenViewModel(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
-    }
-
-    private fun insertImage(image: ImageObj) {
-        disposable.addAll(
-            Single.just(image)
-                .map { imageDao.insertImage(it) }
-                .doOnSubscribe { setProgressState(LoadingState.LOADING) }
-                .doOnError { setProgressState(LoadingState.ERROR) }
-                .doFinally { setProgressState(LoadingState.SUCCESS) }
-                .subscribeOn(WORKER_SCHEDULER)
-                .subscribe(
-                    { },
-                    { Timber.e(it) }
-                )
-        )
-    }
-
-    private fun getAllImages() {
-        disposable.addAll(
-            imageDao.getAllImages()
-                .doOnSubscribe { setProgressState(LoadingState.LOADING) }
-                .doOnError { setProgressState(LoadingState.ERROR) }
-                .doFinally { setProgressState(LoadingState.SUCCESS) }
-                .subscribeOn(WORKER_SCHEDULER)
-                .subscribe(
-                    { Timber.d(it.toString()) },
-                    { Timber.e(it) }
-                )
-        )
     }
 
     private fun checkPermissions() {
@@ -167,24 +134,9 @@ class GeneralPhotoScreenViewModel(
     }
 
     fun doOnDetectFacesClick() {
-
-        disposable.add(
-            getImageObjsList()
-                .doOnSubscribe { setProgressState(LoadingState.LOADING) }
-                .doOnError { setProgressState(LoadingState.ERROR) }
-                .doFinally { setProgressState(LoadingState.SUCCESS) }
-                .subscribeOn(WORKER_SCHEDULER)
-                .subscribe(
-                    {},
-                    {}
-                )
-        )
-
-        val inputData = Data.Builder()
-            .build()
-
         disposable.add(
             imageProcessor.startFaceDetectProcess()
+                .doOnSubscribe { repo.nukeAllImages() }
                 .doOnSubscribe { setProgressState(LoadingState.LOADING) }
                 .doOnError { setProgressState(LoadingState.ERROR) }
                 .doFinally { setProgressState(LoadingState.SUCCESS) }

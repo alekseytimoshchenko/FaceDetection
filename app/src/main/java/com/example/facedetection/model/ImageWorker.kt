@@ -6,6 +6,7 @@ import androidx.work.Worker
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.example.facedetection.App
 import com.example.facedetection.data.local.model.IImageFactory
 import com.example.facedetection.data.local.model.IImageObj
 import com.example.facedetection.data.local.model.ImageFactory
@@ -57,7 +58,7 @@ class ImageWorker : Worker() {
                 .toList()
                 .subscribe(
                     {
-                        Timber.e("%s", it.size)
+                        App.instance.imageDb.imageDao().insertImages(it)
                     },
                     { Timber.e(it) }
                 )

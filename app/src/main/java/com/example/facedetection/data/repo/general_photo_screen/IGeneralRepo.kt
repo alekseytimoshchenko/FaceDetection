@@ -8,4 +8,6 @@ interface IGeneralRepo : IBaseRepo {
     fun allPhotos(): Single<Array<File>>
 
     fun getCameraPath(): Single<String>
+
+    fun nukeAllImages()
 }
