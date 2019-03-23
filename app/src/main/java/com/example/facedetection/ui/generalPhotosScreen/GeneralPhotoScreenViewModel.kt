@@ -142,8 +142,8 @@ class GeneralPhotoScreenViewModel(
                 .doFinally { setProgressState(LoadingState.SUCCESS) }
                 .subscribeOn(WORKER_SCHEDULER)
                 .subscribe(
-                    {imageWorkerRequestUpdate(it)},
-                    {}
+                    { imageWorkerRequestUpdate(it) },
+                    { Timber.e(it) }
                 )
         )
     }
@@ -153,11 +153,11 @@ class GeneralPhotoScreenViewModel(
         setNoResultContainerVisibility(true)
     }
 
-    private fun imageWorkerRequestUpdate(id: UUID){
+    private fun imageWorkerRequestUpdate(id: UUID) {
         imageRequestUpdates.postValue(id)
     }
 
-    fun subscribeToImageRequestUpdates() : LiveData<UUID> = imageRequestUpdates
+    fun subscribeToImageRequestUpdates(): LiveData<UUID> = imageRequestUpdates
 
     fun checkPermission(): LiveData<Boolean> = checkPermission
 }

@@ -57,7 +57,7 @@ dependencies {
     kapt "android.arch.persistence.room:compiler:${libs.room}"
     implementation "android.arch.persistence.room:rxjava2:${libs.room}"
 
-    //Log
+    //Log  Stetho: chrome://inspect/#devices
     implementation "com.jakewharton.timber:timber:${libs.timber}"
     implementation "com.facebook.stetho:stetho:${libs.stetho}"
     implementation "com.facebook.stetho:stetho-okhttp3:${libs.stetho}"

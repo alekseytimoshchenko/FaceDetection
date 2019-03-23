@@ -48,7 +48,7 @@ val generalScreenModule = module {
 }
 
 val notDefinedScreenModule = module {
-    single<INotDefinedRepo> { NotDefinedRepo() }
+    single<INotDefinedRepo> { NotDefinedRepo(get()) }
 
     viewModel<NotDefinedPhotoScreenViewModel>()
 }

@@ -1,7 +1,6 @@
 package com.example.facedetection.ui.notDefinedPhotoScreen
 
 import android.arch.lifecycle.*
-import com.example.facedetection.data.local.db.ImageDao
 import com.example.facedetection.data.local.model.IImageObj
 import com.example.facedetection.data.repo.not_defined_photo_screen.INotDefinedRepo
 import com.example.facedetection.ui.base.IBaseViewModel
@@ -9,10 +8,10 @@ import com.example.facedetection.ui.base.LoadingState
 import com.example.facedetection.utils.LiveEvent
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
+import timber.log.Timber
 
 class NotDefinedPhotoScreenViewModel(
     private val repo: INotDefinedRepo,
-    private val imageDao: ImageDao,
     private val WORKER_SCHEDULER: Scheduler
 ) : ViewModel(), IBaseViewModel, LifecycleObserver {
 
@@ -24,16 +23,32 @@ class NotDefinedPhotoScreenViewModel(
 
     private val disposable: CompositeDisposable = CompositeDisposable()
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun onCreate() {
-    }
-
     init {
         requestContent()
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    fun onCreate() {
+    }
+
     private fun requestContent() {
-        setNoResultContainerVisibility(true)
+        disposable.add(
+            repo.getDBPhotoImages()
+                .doOnSubscribe { setProgressState(LoadingState.LOADING) }
+                .doOnError { setProgressState(LoadingState.ERROR) }
+                .doFinally { setProgressState(LoadingState.SUCCESS) }
+                .subscribeOn(WORKER_SCHEDULER)
+                .subscribe(
+                    {
+                        if (it.isEmpty()) {
+                            setNoResultContainerVisibility(true)
+                        } else {
+                            setContent(it)
+                        }
+                    },
+                    { Timber.e(it) }
+                )
+        )
     }
 
     override fun setProgressState(state: LoadingState) {

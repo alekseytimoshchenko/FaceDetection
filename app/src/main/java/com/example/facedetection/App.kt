@@ -20,6 +20,9 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        if (BuildConfig.DEBUG)
+            Stetho.initializeWithDefaults(this)
+
         imageDb = ImageDB.getInstance(this)
 
         startKoin(
