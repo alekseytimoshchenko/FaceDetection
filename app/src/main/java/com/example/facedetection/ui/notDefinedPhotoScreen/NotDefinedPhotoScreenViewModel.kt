@@ -36,15 +36,21 @@ class NotDefinedPhotoScreenViewModel(
             repo.getDBPhotoImages()
                 .doOnSubscribe { setProgressState(LoadingState.LOADING) }
                 .doOnError { setProgressState(LoadingState.ERROR) }
-                .doFinally { setProgressState(LoadingState.SUCCESS) }
+                .doOnComplete { setProgressState(LoadingState.SUCCESS) }
+                .doOnCancel { setProgressState(LoadingState.SUCCESS) }
                 .subscribeOn(WORKER_SCHEDULER)
                 .subscribe(
                     {
                         if (it.isEmpty()) {
                             setNoResultContainerVisibility(true)
+                            setContentContainerVisibility(false)
                         } else {
                             setContent(it)
+                            setNoResultContainerVisibility(false)
+                            setContentContainerVisibility(true)
                         }
+
+                        setProgressState(LoadingState.SUCCESS)
                     },
                     { Timber.e(it) }
                 )
