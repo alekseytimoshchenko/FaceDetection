@@ -1,10 +1,15 @@
 package com.example.facedetection.data.repo.main_act
 
+import com.example.facedetection.data.repo.base.IBaseRepo
 import com.example.facedetection.ui.base.IBaseFragment
 import com.example.facedetection.ui.faceDetectedPhotoScreen.FaceDetectedPhotoScreen
 import com.example.facedetection.ui.generalPhotosScreen.GeneralPhotosScreen
 import com.example.facedetection.ui.notDefinedPhotoScreen.NotDefinedPhotoScreen
 import io.reactivex.Single
+
+interface IMainRepo : IBaseRepo {
+    fun getContent(): Single<List<IBaseFragment>>
+}
 
 class MainRepo(private val fragFactory: FragmentFactory) : IMainRepo {
     override fun getContent(): Single<List<IBaseFragment>> = Single.just(

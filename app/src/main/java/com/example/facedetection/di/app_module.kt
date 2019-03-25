@@ -54,7 +54,7 @@ val notDefinedScreenModule = module {
 }
 
 val faceDetectedModule = module {
-    single<IFaceDetectedRepo> { FaceDetectedRepo() }
+    single<IFaceDetectedRepo> { FaceDetectedRepo(get()) }
 
     viewModel<FaceDetectedViewModel>()
 }

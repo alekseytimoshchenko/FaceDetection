@@ -2,9 +2,18 @@ package com.example.facedetection.data.repo.general_photo_screen
 
 import android.os.Environment
 import com.example.facedetection.data.local.db.ImageDao
+import com.example.facedetection.data.repo.base.IBaseRepo
 import com.example.facedetection.utils.Constants
 import io.reactivex.Single
 import java.io.File
+
+interface IGeneralRepo : IBaseRepo {
+    fun allPhotos(): Single<Array<File>>
+
+    fun getCameraPath(): Single<String>
+
+    fun nukeAllImages()
+}
 
 class GeneralRepo(private val db: ImageDao) : IGeneralRepo {
     override fun nukeAllImages() {

@@ -8,7 +8,6 @@ import com.example.facedetection.ui.base.LoadingState
 import com.example.facedetection.utils.LiveEvent
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Predicate
 import timber.log.Timber
 
 class NotDefinedPhotoScreenViewModel(
@@ -34,22 +33,7 @@ class NotDefinedPhotoScreenViewModel(
 
     private fun requestContent() {
         disposable.add(
-            repo.getDBPhotoImages()
-                .flatMapIterable { it }
-//                .filter { it.type == IImageObj.NOT_DETECTED }
-//                .filter { it.type == IImageObj.DETECTED }
-                .doOnNext{Timber.e("HII")}
-
-                .filter (Predicate {
-                    if (it.type == IImageObj.DETECTED){
-                        return@Predicate true
-                    }else{
-                        return@Predicate false
-                    }
-                })
-                .toList()
-                .toFlowable()
-                .doOnNext{Timber.e("HII")}
+            repo.getNotDefinedPhotoImages()
                 .doOnSubscribe { isResultVisible(false) }
                 .subscribeOn(WORKER_SCHEDULER)
                 .subscribe(

@@ -8,6 +8,7 @@ import com.example.facedetection.ui.base.LoadingState
 import com.example.facedetection.utils.LiveEvent
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
+import timber.log.Timber
 
 class FaceDetectedViewModel(
     private val repo: IFaceDetectedRepo,
@@ -31,7 +32,27 @@ class FaceDetectedViewModel(
     }
 
     private fun requestContent() {
-        setNoResultContainerVisibility(true)
+        disposable.add(
+            repo.getFaceDetectedPhotoImages()
+                .doOnSubscribe { isResultVisible(false) }
+                .subscribeOn(WORKER_SCHEDULER)
+                .subscribe(
+                    {
+                        if (it.isEmpty()) {
+                            isResultVisible(false)
+                        } else {
+                            setContent(it)
+                            isResultVisible(true)
+                        }
+                    },
+                    { Timber.e(it) }
+                )
+        )
+    }
+
+    private fun isResultVisible(state: Boolean) {
+        setNoResultContainerVisibility(!state)
+        setContentContainerVisibility(state)
     }
 
     override fun setProgressState(state: LoadingState) {

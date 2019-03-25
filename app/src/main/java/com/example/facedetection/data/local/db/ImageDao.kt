@@ -4,6 +4,7 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
+import com.example.facedetection.data.local.model.IImageObj
 import com.example.facedetection.data.local.model.ImageObj
 import io.reactivex.Flowable
 
@@ -19,6 +20,13 @@ interface ImageDao {
      */
     @Query("SELECT * FROM image_db_obj")
     fun getAllImages(): Flowable<List<ImageObj>>
+
+    /**
+     * Get all [ImageObj].
+     * @return all images.
+     */
+    @Query("SELECT * FROM image_db_obj WHERE image_type LIKE :type")
+    fun getImagesBy(@IImageObj.Companion.Type type: String): Flowable<List<ImageObj>>
 
     /**
      * Insert a [ImageObj] in the database. If the [ImageObj] already exists, replace it.
