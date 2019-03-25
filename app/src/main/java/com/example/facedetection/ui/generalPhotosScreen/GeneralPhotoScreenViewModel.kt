@@ -9,6 +9,7 @@ import com.example.facedetection.data.local.model.IImageObj
 import com.example.facedetection.data.repo.general_photo_screen.IGeneralRepo
 import com.example.facedetection.ui.base.IBaseViewModel
 import com.example.facedetection.ui.base.LoadingState
+import com.example.facedetection.utils.Constants
 import com.example.facedetection.utils.IImageProcessor
 import com.example.facedetection.utils.LiveEvent
 import io.reactivex.Scheduler
@@ -16,6 +17,7 @@ import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class GeneralPhotoScreenViewModel(
@@ -91,7 +93,7 @@ class GeneralPhotoScreenViewModel(
             .map { it.toList() }
             .toObservable()
             .flatMapIterable { it }
-            .filter { it.name.contains(".jpg") || it.name.contains(".png") }
+            .filter { it.name.contains(Constants.JPG) || it.name.contains(Constants.PNG) }
             .map { it.absolutePath }
             .map { imageFactory.create(it, IImageObj.NOT_DETECTED) }
             .toList()
@@ -136,6 +138,8 @@ class GeneralPhotoScreenViewModel(
     fun doOnDetectFacesClick() {
         disposable.add(
             imageProcessor.startFaceDetectProcess()
+                    //Just to show loading process
+                .delay(1000, TimeUnit.MILLISECONDS)
                 .doOnSubscribe { repo.nukeAllImages() }
                 .doOnSubscribe { setProgressState(LoadingState.LOADING) }
                 .doOnError { setProgressState(LoadingState.ERROR) }

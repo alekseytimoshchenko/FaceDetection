@@ -26,13 +26,13 @@ class ImageWorker : Worker() {
     private fun getBitmap(path: String): Bitmap = Glide.with(applicationContext)
         .asBitmap()
         .load(path)
-        .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.AUTOMATIC))
+        .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
         .into(200, 200)
         .get()
 
     override fun doWork(): WorkerResult {
 
-         val detector = FaceDetector.Builder(applicationContext)
+        val detector = FaceDetector.Builder(applicationContext)
             .setTrackingEnabled(false)
             .setLandmarkType(FaceDetector.ALL_LANDMARKS)
             .build()
@@ -57,9 +57,7 @@ class ImageWorker : Worker() {
                 )
                 .toList()
                 .subscribe(
-                    {
-                        App.instance.imageDb.imageDao().insertImages(it)
-                    },
+                    { App.instance.imageDb.imageDao().insertImages(it) },
                     { Timber.e(it) }
                 )
         )
@@ -82,7 +80,7 @@ class ImageWorker : Worker() {
         return allPhotos().map { it.toList() }
             .toObservable()
             .flatMapIterable { it }
-            .filter { it.name.contains(".jpg") || it.name.contains(".png") }
+            .filter { it.name.contains(Constants.JPG) || it.name.contains(Constants.PNG) }
             .map { it.absolutePath }
             .map { imageFactory.create(it, IImageObj.NOT_DETECTED) }
             .toList()
@@ -92,8 +90,6 @@ class ImageWorker : Worker() {
         if (!disposable.isDisposed) {
             disposable.dispose()
         }
-
-//        detector = null
 
         super.onStopped()
     }

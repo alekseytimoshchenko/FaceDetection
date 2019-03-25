@@ -19,7 +19,7 @@ class FaceDetectedPhotoScreen : BaseFragment() {
 
     private val model by viewModel<FaceDetectedViewModel>()
 
-    override fun getTitle(): String = "Detected"
+    override fun getTitle(): String = "Faces"
 
     companion object {
         fun newInstance(): FaceDetectedPhotoScreen = FaceDetectedPhotoScreen()

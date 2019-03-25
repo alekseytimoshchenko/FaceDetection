@@ -23,10 +23,17 @@ interface ImageDao {
 
     /**
      * Get all [ImageObj].
-     * @return all images.
+     * @return all images by [IImageObj.Type].
      */
     @Query("SELECT * FROM image_db_obj WHERE image_type LIKE :type")
     fun getImagesBy(@IImageObj.Companion.Type type: String): Flowable<List<ImageObj>>
+
+    /**
+     * Get all [ImageObj].
+     * @return all images by [IImageObj.Type].
+     */
+    @Query("SELECT COUNT(image_type) FROM image_db_obj WHERE image_type LIKE :type")
+    fun getImagesCountBy(@IImageObj.Companion.Type type: String): Flowable<Int>
 
     /**
      * Insert a [ImageObj] in the database. If the [ImageObj] already exists, replace it.

@@ -126,7 +126,7 @@ class GeneralPhotosScreen : BaseFragment() {
     }
 
     private fun showToast(message: String) {
-        Toast.makeText(context?.applicationContext, message, Toast.LENGTH_LONG).show()
+        Toast.makeText(context?.applicationContext, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

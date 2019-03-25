@@ -29,7 +29,7 @@ val mainModule = module {
 
     single { Schedulers.io() }
 
-    single<IMainRepo> { MainRepo(get()) }
+    single<IMainRepo> { MainRepo(get(), get()) }
 
     viewModel<MainActViewModel>()
 }

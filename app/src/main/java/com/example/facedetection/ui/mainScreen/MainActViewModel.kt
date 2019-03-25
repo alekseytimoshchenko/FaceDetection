@@ -22,14 +22,28 @@ class MainActViewModel(
     private val disposable = CompositeDisposable()
 
     private val progress = LiveEvent<LoadingState>()
+    private val faceCount = LiveEvent<Int>()
     private val content = MutableLiveData<List<IBaseFragment>>()
 
     init {
         requestContent()
+        getDetectedFaceCount()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
+    }
+
+    private fun getDetectedFaceCount() {
+        disposable.add(
+            repo.getDetectedFaceCount()
+                .filter { it > 0 }
+                .subscribeOn(WORKER_SCHEDULER)
+                .subscribe(
+                    { setFaceCount(it) },
+                    { Timber.e(it) }
+                )
+        )
     }
 
     override fun setProgressState(state: LoadingState) {
@@ -40,7 +54,7 @@ class MainActViewModel(
 
     private fun requestContent() {
         disposable.add(
-            repo.getContent()
+            repo.getTabs()
                 .doOnSubscribe { setProgressState(LoadingState.LOADING) }
                 .doOnError { setProgressState(LoadingState.ERROR) }
                 .doFinally { setProgressState(LoadingState.SUCCESS) }
@@ -52,7 +66,13 @@ class MainActViewModel(
         )
     }
 
-    fun contentLD(): LiveData<List<IBaseFragment>> = content
+    fun contentLD() = content
+
+    fun faceCount() = faceCount
+
+    private fun setFaceCount(count: Int) {
+        faceCount.postValue(count)
+    }
 
     private fun postContent(content: List<IBaseFragment>) {
         this.content.postValue(content)

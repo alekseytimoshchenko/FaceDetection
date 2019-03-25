@@ -2,6 +2,7 @@ package com.example.facedetection.ui.mainScreen
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.view.View
 import com.example.facedetection.R
 import com.example.facedetection.ui.adapters.SectionsPagerAdapter
@@ -26,7 +27,12 @@ class MainActivity : BaseActivity() {
     private fun observeLiveData() {
         model.contentLD().observe(this, Observer { setContent(it) })
         model.getProgressState().observe(this, Observer { it?.let { setProgress(it) } })
+        model.faceCount().observe(this, Observer { it?.let { showSnackBar(it) } })
         sharedViewModel.getProgressState().observe(this, Observer { it?.let { showProgress(it) } })
+    }
+
+    private fun showSnackBar(it: Int) {
+        Snackbar.make(findViewById(R.id.cl_main_act), "Detect $it photos with face", Snackbar.LENGTH_LONG).show()
     }
 
     private fun showProgress(state: LoadingState) {
