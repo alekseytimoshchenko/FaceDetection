@@ -2,33 +2,30 @@
 
 #### This repository contains a detailed sample app that : 
 - written in Kotlin,  
-- offline first strategy with repository patern 
-- implements MVVM architecture using Dagger2, Room, RxJava, LiveData, ViewModel, Retrofit2 + Gson, etc
+- implements MVVM architecture using Koin, Room, RxJava, LiveData, ViewModel, WorkManager etc
 
 #### The app has following packages:
 1. **data**: It contains all the data accessing and manipulating components.
-2. **di**: Dependency providing classes using Dagger2.
-3. **ui**: View classes along with their corresponding ViewModel.
-4. **utils**: Utility classes.
+2. **di**: Dependency providing classes using Koin.
+3. **model**: Process logic implemented by WorkerManager
+4. **ui**: View classes along with their corresponding ViewModel.
+5. **utils**: Utility classes.
 
 #### Classes have been designed in such a way that it could be inherited and maximize the code reuse.
 
 ### Tools: 
-1. Android Studio 3.2 (Canary 16)
+1. Android Studio 3.3 
 
 ### Library reference resources:
 1. RxJava2: https://github.com/amitshekhariitbhu/RxJava2-Android-Samples
-2. Dagger2: https://github.com/MindorksOpenSource/android-dagger2-example
-3. Retrofit 2: http://square.github.io/retrofit
-4. Gson: https://github.com/google/gson
-5. Glide: https://github.com/bumptech/glide
-6. LeakCanary: https://github.com/square/leakcanary
-7. Timber: https://github.com/JakeWharton/timber
-8. Android Jetpack https://developer.android.com/jetpack/  : 
+2. Koin: https://github.com/InsertKoinIO/koin
+3. Glide: https://github.com/bumptech/glide
+4. LeakCanary: https://github.com/square/leakcanary
+5. Timber: https://github.com/JakeWharton/timber
+6. Android Jetpack https://developer.android.com/jetpack/  : 
    - Room: https://developer.android.com/topic/libraries/architecture/room
    - LiveData: https://developer.android.com/topic/libraries/architecture/livedata
    - ViewModel: https://developer.android.com/topic/libraries/architecture/viewmodel
-   - Paging: https://developer.android.com/topic/libraries/architecture/paging/
   
 ### License
 ```
