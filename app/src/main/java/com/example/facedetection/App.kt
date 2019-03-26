@@ -3,6 +3,7 @@ package com.example.facedetection
 import android.app.Application
 import com.example.facedetection.data.local.db.ImageDB
 import com.example.facedetection.di.*
+import com.example.facedetection.utils.LifecycleHandler
 import com.facebook.stetho.Stetho
 import com.squareup.leakcanary.LeakCanary
 import org.koin.android.ext.android.startKoin
@@ -19,6 +20,8 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        registerActivityLifecycleCallbacks(LifecycleHandler())
 
         if (BuildConfig.DEBUG)
             Stetho.initializeWithDefaults(this)
