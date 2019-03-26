@@ -8,5 +8,7 @@ class Constants {
         const val DB_NAME = "face_detection_db"
         const val JPG = ".jpg"
         const val PNG = ".png"
+        const val NOTIFICATION_CHANEL = "my_notification_chanel"
+        const val STATIC_NOTIFICATION_ID = 1
     }
 }

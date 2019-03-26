@@ -12,6 +12,8 @@ import com.example.facedetection.data.local.model.IImageObj
 import com.example.facedetection.data.local.model.ImageFactory
 import com.example.facedetection.data.local.model.ImageObj
 import com.example.facedetection.utils.Constants
+import com.example.facedetection.utils.LifecycleHandler
+import com.example.facedetection.utils.NotificationUtil
 import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.face.FaceDetector
 import io.reactivex.Observable
@@ -56,6 +58,13 @@ class ImageWorker : Worker() {
                     }
                 )
                 .toList()
+                .doOnSuccess { list ->
+                    if (!LifecycleHandler.isApplicationVisible())
+                        NotificationUtil.sendSimpleNotification(
+                            applicationContext,
+                            list.filter { it.type == IImageObj.DETECTED }.size
+                        )
+                }
                 .subscribe(
                     { App.instance.imageDb.imageDao().insertImages(it) },
                     { Timber.e(it) }

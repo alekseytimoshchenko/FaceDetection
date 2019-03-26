@@ -4,6 +4,7 @@ import android.app.Application
 import com.example.facedetection.data.local.db.ImageDB
 import com.example.facedetection.di.*
 import com.example.facedetection.utils.LifecycleHandler
+import com.example.facedetection.utils.NotificationUtil
 import com.facebook.stetho.Stetho
 import com.squareup.leakcanary.LeakCanary
 import org.koin.android.ext.android.startKoin
@@ -21,6 +22,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        NotificationUtil.createNotificationChannel(this)
         registerActivityLifecycleCallbacks(LifecycleHandler())
 
         if (BuildConfig.DEBUG)
