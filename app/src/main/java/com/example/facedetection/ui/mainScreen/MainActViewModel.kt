@@ -5,6 +5,7 @@ import com.example.facedetection.data.repo.main_act.IMainRepo
 import com.example.facedetection.ui.base.IBaseFragment
 import com.example.facedetection.ui.base.IBaseViewModel
 import com.example.facedetection.ui.base.LoadingState
+import com.example.facedetection.utils.LifecycleHandler
 import com.example.facedetection.utils.LiveEvent
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
@@ -40,7 +41,7 @@ class MainActViewModel(
                 .filter { it > 0 }
                 .subscribeOn(WORKER_SCHEDULER)
                 .subscribe(
-                    { setFaceCount(it) },
+                    { if (LifecycleHandler.isApplicationVisible()) setFaceCount(it) },
                     { Timber.e(it) }
                 )
         )

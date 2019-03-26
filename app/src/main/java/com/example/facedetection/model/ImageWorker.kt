@@ -12,7 +12,6 @@ import com.example.facedetection.data.local.model.IImageObj
 import com.example.facedetection.data.local.model.ImageFactory
 import com.example.facedetection.data.local.model.ImageObj
 import com.example.facedetection.utils.Constants
-import com.example.facedetection.utils.LifecycleHandler
 import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.face.FaceDetector
 import io.reactivex.Observable
@@ -49,7 +48,6 @@ class ImageWorker : Worker() {
                         val bitmap = getBitmap(path)
                         val frame = Frame.Builder().setBitmap(bitmap).build()
                         val faces = detector.detect(frame)
-                        Thread.sleep(3000)
                         Observable.just(faces.size() > 0)
                     },
                     { iImageObj, iIsFaceDetected ->
@@ -63,8 +61,6 @@ class ImageWorker : Worker() {
                     { Timber.e(it) }
                 )
         )
-
-        Timber.e("%s", LifecycleHandler.isApplicationVisible())
 
         return Worker.WorkerResult.SUCCESS
     }

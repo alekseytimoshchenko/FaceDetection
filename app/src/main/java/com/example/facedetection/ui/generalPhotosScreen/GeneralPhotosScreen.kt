@@ -15,11 +15,11 @@ import com.example.facedetection.R
 import com.example.facedetection.data.local.model.IImageObj
 import com.example.facedetection.ui.base.BaseFragment
 import com.example.facedetection.ui.base.IAdapter
+import com.example.facedetection.ui.base.LoadingState
 import com.example.facedetection.ui.generalPhotosScreen.adapters.GeneralPhotoAdapter
 import com.example.facedetection.utils.Constants
 import kotlinx.android.synthetic.main.frag_general_photos_layout.*
 import org.koin.android.viewmodel.ext.android.viewModel
-import timber.log.Timber
 import java.util.*
 
 class GeneralPhotosScreen : BaseFragment() {
@@ -56,9 +56,8 @@ class GeneralPhotosScreen : BaseFragment() {
             .observe(viewLifecycleOwner,
                 Observer { workStatus ->
                     if (workStatus != null && workStatus.state.isFinished) {
+                        model.setProgressState(LoadingState.SUCCESS)
                     }
-
-                    Timber.e("onChanged: %s", workStatus!!.state)
                 })
     }
 

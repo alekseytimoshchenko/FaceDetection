@@ -143,7 +143,6 @@ class GeneralPhotoScreenViewModel(
                 .doOnSubscribe { repo.nukeAllImages() }
                 .doOnSubscribe { setProgressState(LoadingState.LOADING) }
                 .doOnError { setProgressState(LoadingState.ERROR) }
-                .doFinally { setProgressState(LoadingState.SUCCESS) }
                 .subscribeOn(WORKER_SCHEDULER)
                 .subscribe(
                     { imageWorkerRequestUpdate(it) },
